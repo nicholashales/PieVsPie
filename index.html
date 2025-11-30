@@ -99,7 +99,7 @@
             background: white;
             cursor: pointer;
             font-weight: bold;
-            min-width: 220px;
+            min-width: 250px;
         }
         
         .vs-text {
@@ -118,69 +118,16 @@
         }
         
         .pie-ring {
-            width: 350px;
-            height: 350px;
+            width: 400px;
+            height: 400px;
             position: absolute;
             left: 50%;
             top: 50%;
-            transform: translate(-50%, -50%) rotateX(60deg);
-            transform-style: preserve-3d;
-        }
-        
-        .pie-base {
-            width: 100%;
-            height: 100%;
-            background: #d4a574;
-            border-radius: 50%;
-            position: absolute;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            border: 8px solid #8b4513;
-        }
-        
-        .pie-top {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #f4e4c1 0%, #e6d4a8 100%);
-            border-radius: 50%;
-            position: absolute;
-            top: -30px;
-            box-shadow: inset 0 -10px 20px rgba(0,0,0,0.2);
-            border: 8px solid #8b4513;
-        }
-        
-        .pie-divider {
-            position: absolute;
-            width: 100%;
-            height: 2px;
-            background: #8b4513;
-            top: 50%;
-            left: 0;
-            transform: translateY(-50%);
-            z-index: 10;
-        }
-        
-        .quadrant {
-            position: absolute;
-            width: 50%;
-            height: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3em;
-        }
-        
-        .red-corner {
-            top: 0;
-            left: 0;
-            background: rgba(220, 20, 60, 0.3);
-            border-radius: 100% 0 0 0;
-        }
-        
-        .white-corner {
-            bottom: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 0 0 100% 0;
+            transform: translate(-50%, -50%);
+            background-image: url('images/other/original/Arena.png');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
         }
         
         .fighter-img {
@@ -189,6 +136,7 @@
             position: absolute;
             transition: all 0.3s ease;
             z-index: 20;
+            object-fit: contain;
         }
         
         .fighter-img.red {
@@ -315,28 +263,30 @@
             <div class="fighter">
                 <label>RED CORNER</label>
                 <select id="redFighter">
-                    <option>Alan Star</option>
-                    <option>Crustia Twinkleman</option>
-                    <option>Stephen Pie</option>
-                    <option>Piemon Cowell</option>
-                    <option>Oscar Pastry</option>
-                    <option>Linford Crusty</option>
-                    <option>Princess Pieanna</option>
-                    <option>Sultana of Bruneye</option>
-                    <option>Miley Pierus</option>
-                    <option>Edwina Currant</option>
                     <option>Brandy Toksvig</option>
+                    <option>C3-Pie0</option>
+                    <option>Camilla Mixing-Bowls</option>
+                    <option>Crustia Winkleman</option>
                     <option>Crustin Hoffman</option>
                     <option>Crusty Springfield</option>
-                    <option>Camilla Mixing-Bowls</option>
-                    <option>Bake Whitehall</option>
+                    <option>Dave Grohlling Pin</option>
+                    <option>Dr Choux</option>
+                    <option>Greggs Davies</option>
+                    <option>Icing Charles</option>
+                    <option>Jasmin Pieris</option>
+                    <option>Kevin Pietersen</option>
+                    <option>Linford Crusty</option>
+                    <option>Miley Pyrus</option>
+                    <option>Mince Pyson</option>
+                    <option>Mr Feast</option>
+                    <option>Oscar Pastry</option>
                     <option>Piela Radcliffe</option>
-                    <option>Alan Sugar</option>
-                    <option>Liz Crust</option>
-                    <option>Sugar Pie Leonard</option>
-                    <option>Mince Tyson</option>
-                    <option>Cake Paul</option>
-                    <option>Fruit Mayweather</option>
+                    <option>Pieman Cowell</option>
+                    <option>Pieter Schmeichel</option>
+                    <option>Princess Pieanna</option>
+                    <option>Shortcrustney Dauwalter</option>
+                    <option>Stephen Pie</option>
+                    <option>The Sultana of Brunei</option>
                 </select>
             </div>
             
@@ -345,28 +295,30 @@
             <div class="fighter">
                 <label>WHITE CORNER</label>
                 <select id="whiteFighter">
-                    <option>Alan Star</option>
-                    <option>Crustia Twinkleman</option>
-                    <option>Stephen Pie</option>
-                    <option>Piemon Cowell</option>
-                    <option>Oscar Pastry</option>
-                    <option>Linford Crusty</option>
-                    <option>Princess Pieanna</option>
-                    <option>Sultana of Bruneye</option>
-                    <option>Miley Pierus</option>
-                    <option>Edwina Currant</option>
                     <option>Brandy Toksvig</option>
+                    <option>C3-Pie0</option>
+                    <option>Camilla Mixing-Bowls</option>
+                    <option>Crustia Winkleman</option>
                     <option>Crustin Hoffman</option>
                     <option>Crusty Springfield</option>
-                    <option>Camilla Mixing-Bowls</option>
-                    <option>Bake Whitehall</option>
+                    <option>Dave Grohlling Pin</option>
+                    <option>Dr Choux</option>
+                    <option>Greggs Davies</option>
+                    <option>Icing Charles</option>
+                    <option>Jasmin Pieris</option>
+                    <option>Kevin Pietersen</option>
+                    <option>Linford Crusty</option>
+                    <option>Miley Pyrus</option>
+                    <option>Mince Pyson</option>
+                    <option>Mr Feast</option>
+                    <option>Oscar Pastry</option>
                     <option>Piela Radcliffe</option>
-                    <option>Alan Sugar</option>
-                    <option>Liz Crust</option>
-                    <option>Sugar Pie Leonard</option>
-                    <option>Mince Tyson</option>
-                    <option>Cake Paul</option>
-                    <option>Fruit Mayweather</option>
+                    <option>Pieman Cowell</option>
+                    <option>Pieter Schmeichel</option>
+                    <option>Princess Pieanna</option>
+                    <option>Shortcrustney Dauwalter</option>
+                    <option>Stephen Pie</option>
+                    <option>The Sultana of Brunei</option>
                 </select>
             </div>
         </div>
@@ -377,37 +329,8 @@
             🎄 ⭐ 🎄
         </div>
         <div class="pie-ring">
-            <div class="pie-base"></div>
-            <div class="pie-top">
-                <div class="pie-divider"></div>
-                <div class="quadrant red-corner"></div>
-                <div class="quadrant white-corner"></div>
-                <svg class="fighter-img red" id="redFighterImg" viewBox="0 0 200 200">
-                    <circle cx="100" cy="70" r="40" fill="#f4e4c1" stroke="#8b4513" stroke-width="4"/>
-                    <ellipse cx="85" cy="65" rx="8" ry="12" fill="#1a1a2e"/>
-                    <ellipse cx="115" cy="65" rx="8" ry="12" fill="#1a1a2e"/>
-                    <path d="M 80 85 Q 100 95 120 85" stroke="#1a1a2e" stroke-width="3" fill="none"/>
-                    <rect x="60" y="110" width="80" height="70" rx="10" fill="#dc143c"/>
-                    <circle cx="100" cy="140" r="15" fill="#f4e4c1"/>
-                    <rect x="50" y="120" width="20" height="50" rx="10" fill="#f4e4c1"/>
-                    <rect x="130" y="120" width="20" height="50" rx="10" fill="#f4e4c1"/>
-                    <path d="M 70 50 L 80 40 L 90 50" fill="none" stroke="#dc143c" stroke-width="3"/>
-                </svg>
-                <svg class="fighter-img white" id="whiteFighterImg" viewBox="0 0 200 200">
-                    <circle cx="100" cy="70" r="40" fill="#f4e4c1" stroke="#8b4513" stroke-width="4"/>
-                    <ellipse cx="85" cy="65" rx="8" ry="12" fill="#1a1a2e"/>
-                    <ellipse cx="115" cy="65" rx="8" ry="12" fill="#1a1a2e"/>
-                    <path d="M 80 85 Q 100 95 120 85" stroke="#1a1a2e" stroke-width="3" fill="none"/>
-                    <rect x="60" y="110" width="80" height="70" rx="10" fill="white" stroke="#8b4513" stroke-width="2"/>
-                    <circle cx="100" cy="140" r="15" fill="#f4e4c1"/>
-                    <rect x="50" y="120" width="20" height="50" rx="10" fill="#f4e4c1"/>
-                    <rect x="130" y="120" width="20" height="50" rx="10" fill="#f4e4c1"/>
-                    <circle cx="100" cy="40" r="15" fill="#228b22"/>
-                    <circle cx="95" cy="35" r="4" fill="#dc143c"/>
-                    <circle cx="105" cy="35" r="4" fill="#dc143c"/>
-                    <circle cx="100" cy="30" r="4" fill="#dc143c"/>
-                </svg>
-            </div>
+            <img class="fighter-img red" id="redFighterImg" src="images/fighters/original/Brandy-Toksvig-1.png" alt="Red Fighter">
+            <img class="fighter-img white" id="whiteFighterImg" src="images/fighters/original/Brandy-Toksvig-1.png" alt="White Fighter">
         </div>
     </div>
     
@@ -417,11 +340,11 @@
             <div class="radio-group">
                 <label class="radio-option">
                     <input type="radio" name="winner" value="red">
-                    <span id="redLabel">Red Corner</span>
+                    <span id="redLabel">Brandy Toksvig</span>
                 </label>
                 <label class="radio-option">
                     <input type="radio" name="winner" value="white">
-                    <span id="whiteLabel">White Corner</span>
+                    <span id="whiteLabel">Brandy Toksvig</span>
                 </label>
             </div>
         </div>
@@ -448,23 +371,31 @@
         const tastingNotes = document.getElementById('tastingNotes');
         const submitBtn = document.getElementById('submitBtn');
         
-        console.log('Elements found:', {
-            redSelect: !!redSelect,
-            whiteSelect: !!whiteSelect,
-            pieCode: !!pieCode,
-            tastingNotes: !!tastingNotes,
-            submitBtn: !!submitBtn
-        });
+        // Fighter name to filename mapping
+        function getFighterFilename(fighterName) {
+            return fighterName.replace(/ /g, '-');
+        }
         
-        // Update labels when fighters change
+        // Update fighter images when selection changes
+        function updateFighterImage(fighter, imgElement, imageNumber = 1) {
+            const filename = getFighterFilename(fighter);
+            imgElement.src = `images/fighters/original/${filename}-${imageNumber}.png`;
+            imgElement.alt = fighter;
+        }
+        
+        // Update labels and images when fighters change
         redSelect.addEventListener('change', () => {
             redLabel.textContent = redSelect.value;
+            updateFighterImage(redSelect.value, redFighterImg, 1);
             updateFighterOptions();
+            resetWinnerState();
         });
         
         whiteSelect.addEventListener('change', () => {
             whiteLabel.textContent = whiteSelect.value;
+            updateFighterImage(whiteSelect.value, whiteFighterImg, 1);
             updateFighterOptions();
+            resetWinnerState();
         });
         
         // Prevent selecting the same fighter in both corners
@@ -489,161 +420,111 @@
                     if (!option.disabled && option.value !== redValue) {
                         whiteSelect.value = option.value;
                         whiteLabel.textContent = option.value;
+                        updateFighterImage(option.value, whiteFighterImg, 1);
                         break;
                     }
                 }
             }
         }
         
-        // Initialize labels
+        // Reset winner state when fighters change
+        function resetWinnerState() {
+            const checkedRadio = document.querySelector('input[name="winner"]:checked');
+            if (checkedRadio) {
+                checkedRadio.checked = false;
+            }
+            updateFighterImage(redSelect.value, redFighterImg, 1);
+            updateFighterImage(whiteSelect.value, whiteFighterImg, 1);
+        }
+        
+        // Initialize labels and images
         redLabel.textContent = redSelect.value;
         whiteLabel.textContent = whiteSelect.value;
+        updateFighterImage(redSelect.value, redFighterImg, 1);
+        updateFighterImage(whiteSelect.value, whiteFighterImg, 1);
         updateFighterOptions();
         
         // Handle winner selection
         winnerRadios.forEach(radio => {
             radio.addEventListener('change', (e) => {
                 if (e.target.value === 'red') {
-                    // Red wins
-                    redFighterImg.innerHTML = `
-                        <circle cx="100" cy="70" r="40" fill="#f4e4c1" stroke="#8b4513" stroke-width="4"/>
-                        <ellipse cx="85" cy="65" rx="8" ry="12" fill="#1a1a2e"/>
-                        <ellipse cx="115" cy="65" rx="8" ry="12" fill="#1a1a2e"/>
-                        <path d="M 80 85 Q 100 75 120 85" stroke="#1a1a2e" stroke-width="3" fill="none"/>
-                        <rect x="60" y="110" width="80" height="70" rx="10" fill="#dc143c"/>
-                        <circle cx="100" cy="140" r="15" fill="#f4e4c1"/>
-                        <rect x="50" y="100" width="20" height="50" rx="10" fill="#f4e4c1" transform="rotate(-45 60 125)"/>
-                        <rect x="130" y="100" width="20" height="50" rx="10" fill="#f4e4c1" transform="rotate(45 140 125)"/>
-                        <path d="M 70 50 L 80 40 L 90 50" fill="none" stroke="#dc143c" stroke-width="3"/>
-                        <text x="100" y="30" font-size="30" text-anchor="middle" fill="#ffd700">👑</text>
-                    `;
-                    
-                    // White loses
-                    whiteFighterImg.innerHTML = `
-                        <circle cx="100" cy="70" r="40" fill="#f4e4c1" stroke="#8b4513" stroke-width="4"/>
-                        <ellipse cx="85" cy="65" rx="6" ry="6" fill="#1a1a2e"/>
-                        <ellipse cx="115" cy="65" rx="6" ry="6" fill="#1a1a2e"/>
-                        <path d="M 80 90 Q 100 85 120 90" stroke="#1a1a2e" stroke-width="3" fill="none"/>
-                        <rect x="60" y="110" width="80" height="70" rx="10" fill="white" stroke="#8b4513" stroke-width="2"/>
-                        <circle cx="100" cy="140" r="15" fill="#f4e4c1"/>
-                        <rect x="50" y="120" width="20" height="50" rx="10" fill="#f4e4c1"/>
-                        <rect x="130" y="120" width="20" height="50" rx="10" fill="#f4e4c1"/>
-                        <circle cx="100" cy="40" r="15" fill="#228b22"/>
-                        <text x="70" y="40" font-size="20">⭐</text>
-                        <text x="110" y="30" font-size="20">⭐</text>
-                        <text x="90" y="25" font-size="20">⭐</text>
-                    `;
+                    // Red wins - show victory (image 2) for red, defeat (image 3) for white
+                    updateFighterImage(redSelect.value, redFighterImg, 2);
+                    updateFighterImage(whiteSelect.value, whiteFighterImg, 3);
                 } else if (e.target.value === 'white') {
-                    // White wins
-                    whiteFighterImg.innerHTML = `
-                        <circle cx="100" cy="70" r="40" fill="#f4e4c1" stroke="#8b4513" stroke-width="4"/>
-                        <ellipse cx="85" cy="65" rx="8" ry="12" fill="#1a1a2e"/>
-                        <ellipse cx="115" cy="65" rx="8" ry="12" fill="#1a1a2e"/>
-                        <path d="M 80 85 Q 100 75 120 85" stroke="#1a1a2e" stroke-width="3" fill="none"/>
-                        <rect x="60" y="110" width="80" height="70" rx="10" fill="white" stroke="#8b4513" stroke-width="2"/>
-                        <circle cx="100" cy="140" r="15" fill="#f4e4c1"/>
-                        <rect x="50" y="100" width="20" height="50" rx="10" fill="#f4e4c1" transform="rotate(-45 60 125)"/>
-                        <rect x="130" y="100" width="20" height="50" rx="10" fill="#f4e4c1" transform="rotate(45 140 125)"/>
-                        <circle cx="100" cy="40" r="15" fill="#228b22"/>
-                        <circle cx="95" cy="35" r="4" fill="#dc143c"/>
-                        <circle cx="105" cy="35" r="4" fill="#dc143c"/>
-                        <circle cx="100" cy="30" r="4" fill="#dc143c"/>
-                        <text x="100" y="25" font-size="30" text-anchor="middle" fill="#ffd700">👑</text>
-                    `;
-                    
-                    // Red loses
-                    redFighterImg.innerHTML = `
-                        <circle cx="100" cy="70" r="40" fill="#f4e4c1" stroke="#8b4513" stroke-width="4"/>
-                        <ellipse cx="85" cy="65" rx="6" ry="6" fill="#1a1a2e"/>
-                        <ellipse cx="115" cy="65" rx="6" ry="6" fill="#1a1a2e"/>
-                        <path d="M 80 90 Q 100 85 120 90" stroke="#1a1a2e" stroke-width="3" fill="none"/>
-                        <rect x="60" y="110" width="80" height="70" rx="10" fill="#dc143c"/>
-                        <circle cx="100" cy="140" r="15" fill="#f4e4c1"/>
-                        <rect x="50" y="120" width="20" height="50" rx="10" fill="#f4e4c1"/>
-                        <rect x="130" y="120" width="20" height="50" rx="10" fill="#f4e4c1"/>
-                        <path d="M 70 50 L 80 40 L 90 50" fill="none" stroke="#dc143c" stroke-width="3"/>
-                        <text x="70" y="40" font-size="20">⭐</text>
-                        <text x="110" y="30" font-size="20">⭐</text>
-                        <text x="90" y="25" font-size="20">⭐</text>
-                    `;
+                    // White wins - show victory (image 2) for white, defeat (image 3) for red
+                    updateFighterImage(whiteSelect.value, whiteFighterImg, 2);
+                    updateFighterImage(redSelect.value, redFighterImg, 3);
                 }
             });
         });
         
-        // Handle form submission
-        submitBtn.addEventListener('click', () => {
-            const selectedWinner = document.querySelector('input[name="winner"]:checked');
-            
-            // Validation
-            if (!pieCode.value.trim()) {
-                alert('⚠️ Please enter a PIE-GHT NUMBER for verification!');
-                return;
-            }
-            
-            if (!selectedWinner) {
-                alert('⚠️ Please declare a winner!');
-                return;
-            }
-            
-            // Prepare form data
-            const formData = {
-                pieCode: pieCode.value.trim(),
-                redFighter: redSelect.value,
-                whiteFighter: whiteSelect.value,
-                winner: selectedWinner.value === 'red' ? redSelect.value : whiteSelect.value,
-                loser: selectedWinner.value === 'red' ? whiteSelect.value : redSelect.value,
-                tastingNotes: tastingNotes.value.trim()
-            };
-            
-            console.log('Submitting to Google Form:', formData);
-            
-            // Submit to Google Form
-            const googleFormData = new URLSearchParams();
-            googleFormData.append('entry.2094119789', formData.pieCode);
-            googleFormData.append('entry.1745535013', formData.winner);
-            googleFormData.append('entry.856455218', formData.loser);
-            googleFormData.append('entry.162418582', formData.tastingNotes);
-            
-            // Use an iframe to submit to avoid CORS issues
-            const iframe = document.createElement('iframe');
-            iframe.style.display = 'none';
-            iframe.name = 'hidden_iframe';
-            document.body.appendChild(iframe);
-            
-            const form = document.createElement('form');
-            form.target = 'hidden_iframe';
-            form.method = 'POST';
-            form.action = GOOGLE_FORM_URL;
-            
-            // Add form fields
-            const fields = {
-                'entry.2094119789': formData.pieCode,
-                'entry.1745535013': formData.winner,
-                'entry.856455218': formData.loser,
-                'entry.162418582': formData.tastingNotes
-            };
-            
-            for (const [key, value] of Object.entries(fields)) {
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = key;
-                input.value = value;
-                form.appendChild(input);
-            }
-            
-            document.body.appendChild(form);
-            form.submit();
-            
-            // Show success message immediately
-            alert(`✅ FIGHT RESULTS SUBMITTED!\n\nPie-ght #: ${formData.pieCode}\n${formData.redFighter} vs ${formData.whiteFighter}\nWinner: ${formData.winner}\nLoser: ${formData.loser}\n\nThank you for judging!`);
-            
-            // Clean up
-            setTimeout(() => {
-                document.body.removeChild(form);
-                document.body.removeChild(iframe);
-            }, 1000);
+        console.log('Elements found:', {
+            redSelect: !!redSelect,
+            whiteSelect: !!whiteSelect,
+            pieCode: !!pieCode,
+            tastingNotes: !!tastingNotes,
+            submitBtn: !!submitBtn
         });
+        
+        // Handle form submission
+        if (submitBtn) {
+            console.log('Submit button found, attaching listener');
+            submitBtn.addEventListener('click', () => {
+                console.log('Submit button clicked');
+                
+                const selectedWinner = document.querySelector('input[name="winner"]:checked');
+                
+                // Validation
+                if (!pieCode.value.trim()) {
+                    alert('⚠️ Please enter a PIE-GHT NUMBER for verification!');
+                    return;
+                }
+                
+                if (!selectedWinner) {
+                    alert('⚠️ Please declare a winner!');
+                    return;
+                }
+                
+                console.log('Validation passed');
+                
+                // Prepare form data
+                const formData = {
+                    pieCode: pieCode.value.trim(),
+                    redFighter: redSelect.value,
+                    whiteFighter: whiteSelect.value,
+                    winner: selectedWinner.value === 'red' ? redSelect.value : whiteSelect.value,
+                    loser: selectedWinner.value === 'red' ? whiteSelect.value : redSelect.value,
+                    tastingNotes: tastingNotes.value.trim()
+                };
+                
+                console.log('Form data prepared:', formData);
+                console.log('Submitting to:', GOOGLE_FORM_URL);
+                
+                // Create FormData for submission
+                const googleFormData = new FormData();
+                googleFormData.append('entry.2094119789', formData.pieCode);
+                googleFormData.append('entry.1745535013', formData.winner);
+                googleFormData.append('entry.856455218', formData.loser);
+                googleFormData.append('entry.162418582', formData.tastingNotes);
+                
+                // Submit using fetch
+                fetch(GOOGLE_FORM_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: googleFormData
+                }).then(() => {
+                    console.log('Submission completed');
+                    alert(`✅ FIGHT RESULTS SUBMITTED!\n\nPie-ght #: ${formData.pieCode}\n${formData.redFighter} vs ${formData.whiteFighter}\nWinner: ${formData.winner}\nLoser: ${formData.loser}\n\nThank you for judging!`);
+                }).catch((error) => {
+                    console.error('Submission error:', error);
+                    // Still show success since no-cors doesn't return readable errors
+                    alert(`✅ FIGHT RESULTS SUBMITTED!\n\nPie-ght #: ${formData.pieCode}\n${formData.redFighter} vs ${formData.whiteFighter}\nWinner: ${formData.winner}\nLoser: ${formData.loser}\n\nThank you for judging!`);
+                });
+            });
+        } else {
+            console.error('Submit button not found!');
+        }
     </script>
-<img src="images/fighters/original/C3-Pie0-1.png" />
 </body>
 </html>
