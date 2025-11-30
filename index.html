@@ -145,8 +145,8 @@
         }
         
         .fighter-img {
-            width: 192px; /* 20% larger than 160px */
-            height: 192px;
+            width: 15.2%; /* 20% smaller */ /* scales with arena width (approx 192px at 1000px ring) */
+            height: auto; /* maintain aspect ratio of fighter images */
             position: absolute;
             transition: all 0.3s ease;
             z-index: 20;
@@ -154,13 +154,13 @@
         }
         
         .fighter-img.red {
-            bottom: 65%;
+            bottom: 75%; /* raise feet by 10% */
             left: 38%;
             transform: translate(-50%, 50%);
         }
         
         .fighter-img.white {
-            bottom: 65%;
+            bottom: 70%;
             right: 38%;
             transform: translate(50%, 50%);
         }
@@ -417,8 +417,8 @@
             🎄 ⭐ 🎄
         </div>
         <div class="pie-ring">
-            <img class="fighter-img red" id="redFighterImg" src="https://pievspie.online/images/fighters/480/Brandy-Toksvig-1.png" alt="Red Fighter">
-            <img class="fighter-img white" id="whiteFighterImg" src="https://pievspie.online/images/fighters/480/Brandy-Toksvig-1.png" alt="White Fighter">
+            <img class="fighter-img red" id="redFighterImg" src="https://pievspie.online/images/fighters/original/Brandy-Toksvig-1.png" alt="Red Fighter">
+            <img class="fighter-img white" id="whiteFighterImg" src="https://pievspie.online/images/fighters/original/Brandy-Toksvig-1.png" alt="White Fighter">
         </div>
     </div>
     
@@ -467,7 +467,7 @@
         // Update fighter images when selection changes
         function updateFighterImage(fighter, imgElement, imageNumber = 1) {
             const filename = getFighterFilename(fighter);
-            imgElement.src = `https://pievspie.online/images/fighters/480/${filename}-${imageNumber}.png`;
+            imgElement.src = `https://pievspie.online/images/fighters/original/${filename}-${imageNumber}.png`;
             imgElement.alt = fighter;
         }
         
