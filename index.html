@@ -38,101 +38,115 @@
         
         .fight-card {
             background: rgba(244, 228, 193, 0.95);
-            padding: 30px;
+            padding: 16px 18px;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            margin-bottom: 40px;
+            margin-bottom: 18px;
             border: 5px solid #dc143c;
+            max-width: 520px;
+            width: 100%;
         }
         
         .pie-code-section {
-            text-align: center;
-            margin-bottom: 25px;
-            padding-bottom: 20px;
-            border-bottom: 3px dashed #dc143c;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start; /* left align */
+            gap: 6px;
+            margin-bottom: 10px;
+            padding-bottom: 6px;
+            border-bottom: 2px dashed #dc143c;
+            text-align: left;
+            width: auto;
         }
         
         .pie-code-section label {
-            display: block;
-            font-size: 1.4em;
-            margin-bottom: 10px;
+            font-size: 0.95em;
             color: #dc143c;
             font-weight: bold;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            margin-bottom: 0;
         }
         
         .pie-code-section input {
-            padding: 12px 20px;
-            font-size: 1.2em;
-            border: 3px solid #1a1a2e;
-            border-radius: 8px;
+            padding: 4px 8px; /* smaller */
+            font-size: 0.8em; /* smaller text */
+            border: 2px solid #1a1a2e;
+            border-radius: 6px;
             background: white;
             text-align: center;
             font-weight: bold;
-            min-width: 300px;
+            min-width: 0;
+            width: 120px; /* significantly smaller */
+            max-width: 140px;
             text-transform: uppercase;
         }
         
         .fighter-selection {
             display: flex;
-            gap: 40px;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
             align-items: center;
-            justify-content: center;
         }
         
         .fighter {
             text-align: center;
+            flex: 1 1 0;
         }
         
         .fighter label {
             display: block;
-            font-size: 1.2em;
-            margin-bottom: 10px;
+            font-size: 0.95em;
+            margin-bottom: 4px;
             color: #1a1a2e;
         }
         
         .fighter select {
-            padding: 12px 20px;
-            font-size: 1.1em;
+            padding: 8px 10px;
+            font-size: 0.95em;
             border: 3px solid #1a1a2e;
             border-radius: 8px;
             background: white;
             cursor: pointer;
             font-weight: bold;
-            min-width: 250px;
+            min-width: 220px;
+            width: auto;
         }
         
         .vs-text {
-            font-size: 2.5em;
+            font-size: 1.6em;
             color: #dc143c;
             font-weight: bold;
             text-shadow: 2px 2px 0 #1a1a2e;
+            align-self: center;
         }
         
         .ring {
-            width: 500px;
-            height: 400px;
+            width: 100%;
+            max-width: 1000px;
+            height: 600px;
             position: relative;
-            margin: 0 auto;
+            margin: 20px auto 0;
             perspective: 1000px;
         }
         
         .pie-ring {
-            width: 400px;
-            height: 400px;
+            width: 100%;
+            height: 100%;
             position: absolute;
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
-            background-image: url('images/other/original/Arena.png');
+            background-image: url('https://pievspie.online/images/other/original/Arena.png');
             background-size: contain;
             background-position: center;
             background-repeat: no-repeat;
         }
         
         .fighter-img {
-            width: 160px;
-            height: 160px;
+            width: 192px; /* 20% larger than 160px */
+            height: 192px;
             position: absolute;
             transition: all 0.3s ease;
             z-index: 20;
@@ -140,14 +154,14 @@
         }
         
         .fighter-img.red {
-            top: 25%;
-            left: 25%;
-            transform: translate(-50%, -50%);
+            bottom: 65%;
+            left: 38%;
+            transform: translate(-50%, 50%);
         }
         
         .fighter-img.white {
-            bottom: 25%;
-            right: 25%;
+            bottom: 65%;
+            right: 38%;
             transform: translate(50%, 50%);
         }
         
@@ -169,6 +183,7 @@
             margin-top: 40px;
             border: 5px solid #228b22;
             max-width: 600px;
+            width: 100%;
         }
         
         .winner-selection {
@@ -249,6 +264,79 @@
         .submit-btn:active {
             transform: translateY(0);
         }
+
+        /* Responsive tweaks */
+        @media (max-width: 480px) {
+            body {
+                justify-content: flex-start;
+                padding: 15px 10px;
+            }
+
+            h1 {
+                font-size: 2.4em;
+                letter-spacing: 4px;
+                margin-bottom: 16px;
+                text-align: center;
+            }
+
+            .fight-card {
+                padding: 14px;
+                margin-bottom: 14px;
+            }
+
+            .pie-code-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .pie-code-section label {
+                text-align: center;
+            }
+
+            .pie-code-section input {
+                max-width: 100%;
+                width: 100%;
+            }
+
+            .fighter-selection {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+
+            .fighter select {
+                min-width: 0;
+                width: 100%;
+            }
+
+            .vs-text {
+                font-size: 1.3em;
+                margin: 2px 0;
+            }
+
+            .ring {
+                width: 100%;
+                max-width: 100%;
+                height: 300px;
+                margin-top: 12px;
+            }
+
+            .results-section {
+                width: 100%;
+                padding: 20px;
+                margin-top: 20px;
+            }
+
+            .radio-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .submit-btn {
+                font-size: 1.1em;
+                padding: 14px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -256,11 +344,11 @@
     
     <div class="fight-card">
         <div class="pie-code-section">
-            <label for="pieCode">PIE-GHT NUMBER</label>
-            <input type="text" id="pieCode" placeholder="Enter verification code (e.g. PIE-2024-001)">
+            <label for="pieCode">Pie Code</label>
+            <input type="text" id="pieCode" placeholder="Pie Code">
         </div>
         <div class="fighter-selection">
-            <div class="fighter">
+            <div class="fighter" style="text-align:left; width:auto; max-width:260px; align-self:flex-start;">
                 <label>RED CORNER</label>
                 <select id="redFighter">
                     <option>Brandy Toksvig</option>
@@ -292,7 +380,7 @@
             
             <div class="vs-text">VS</div>
             
-            <div class="fighter">
+            <div class="fighter" style="text-align:right; width:auto; max-width:260px; align-self:flex-end;">
                 <label>WHITE CORNER</label>
                 <select id="whiteFighter">
                     <option>Brandy Toksvig</option>
@@ -329,8 +417,8 @@
             🎄 ⭐ 🎄
         </div>
         <div class="pie-ring">
-            <img class="fighter-img red" id="redFighterImg" src="images/fighters/original/Brandy-Toksvig-1.png" alt="Red Fighter">
-            <img class="fighter-img white" id="whiteFighterImg" src="images/fighters/original/Brandy-Toksvig-1.png" alt="White Fighter">
+            <img class="fighter-img red" id="redFighterImg" src="https://pievspie.online/images/fighters/480/Brandy-Toksvig-1.png" alt="Red Fighter">
+            <img class="fighter-img white" id="whiteFighterImg" src="https://pievspie.online/images/fighters/480/Brandy-Toksvig-1.png" alt="White Fighter">
         </div>
     </div>
     
@@ -379,7 +467,7 @@
         // Update fighter images when selection changes
         function updateFighterImage(fighter, imgElement, imageNumber = 1) {
             const filename = getFighterFilename(fighter);
-            imgElement.src = `images/fighters/original/${filename}-${imageNumber}.png`;
+            imgElement.src = `https://pievspie.online/images/fighters/480/${filename}-${imageNumber}.png`;
             imgElement.alt = fighter;
         }
         
