@@ -10,7 +10,7 @@ import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // ---- CONFIG ----
-const WEB_APP_URL = import.meta.env.VITE_WEB_APP_URL || "https://script.google.com/macros/s/AKfycbwn03WiDtUAZRcjSksIqJtfz_R_V6wsPQTFu2MuAgrkoVCyg4ZmhS644IdGXc2aId0IIw/exec"; 
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwn03WiDtUAZRcjSksIqJtfz_R_V6wsPQTFu2MuAgrkoVCyg4ZmhS644IdGXc2aId0IIw/exec"; 
 
 export default function MincePieVoteApp() {
   const [comparisons, setComparisons] = useState([]);
