@@ -1,665 +1,648 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2487.7">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000; min-height: 14.0px}
-    span.s1 {font-kerning: none}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIE VS PIE</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            font-family: 'Arial Black', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #f4e4c1;
+            font-size: 4em;
+            text-shadow: 3px 3px 0 #dc143c;
+            margin-bottom: 30px;
+            letter-spacing: 8px;
+        }
+        
+        .vs {
+            color: #dc143c;
+            display: inline-block;
+            transform: rotate(-5deg);
+        }
+        
+        .fight-card {
+            background: rgba(244, 228, 193, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            margin-bottom: 40px;
+            border: 5px solid #dc143c;
+        }
+        
+        .pie-code-section {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 3px dashed #dc143c;
+        }
+        
+        .pie-code-section label {
+            display: block;
+            font-size: 1.4em;
+            margin-bottom: 10px;
+            color: #dc143c;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+        
+        .pie-code-section input {
+            padding: 12px 20px;
+            font-size: 1.2em;
+            border: 3px solid #1a1a2e;
+            border-radius: 8px;
+            background: white;
+            text-align: center;
+            font-weight: bold;
+            min-width: 300px;
+            text-transform: uppercase;
+        }
+        
+        .fighter-selection {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .fighter {
+            text-align: center;
+        }
+        
+        .fighter label {
+            display: block;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            color: #1a1a2e;
+        }
+        
+        .fighter select {
+            padding: 12px 20px;
+            font-size: 1.1em;
+            border: 3px solid #1a1a2e;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            font-weight: bold;
+            min-width: 220px;
+        }
+        
+        .vs-text {
+            font-size: 2.5em;
+            color: #dc143c;
+            font-weight: bold;
+            text-shadow: 2px 2px 0 #1a1a2e;
+        }
+        
+        .ring {
+            width: 500px;
+            height: 400px;
+            position: relative;
+            margin: 0 auto;
+            perspective: 1000px;
+        }
+        
+        .pie-ring {
+            width: 350px;
+            height: 350px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) rotateX(60deg);
+            transform-style: preserve-3d;
+        }
+        
+        .pie-base {
+            width: 100%;
+            height: 100%;
+            background: #d4a574;
+            border-radius: 50%;
+            position: absolute;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            border: 8px solid #8b4513;
+        }
+        
+        .pie-top {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f4e4c1 0%, #e6d4a8 100%);
+            border-radius: 50%;
+            position: absolute;
+            top: -30px;
+            box-shadow: inset 0 -10px 20px rgba(0,0,0,0.2);
+            border: 8px solid #8b4513;
+        }
+        
+        .pie-divider {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: #8b4513;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            z-index: 10;
+        }
+        
+        .quadrant {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+        }
+        
+        .red-corner {
+            top: 0;
+            left: 0;
+            background: rgba(220, 20, 60, 0.3);
+            border-radius: 100% 0 0 0;
+        }
+        
+        .white-corner {
+            bottom: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 0 0 100% 0;
+        }
+        
+        .fighter-img {
+            width: 160px;
+            height: 160px;
+            position: absolute;
+            transition: all 0.3s ease;
+            z-index: 20;
+        }
+        
+        .fighter-img.red {
+            top: 25%;
+            left: 25%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .fighter-img.white {
+            bottom: 25%;
+            right: 25%;
+            transform: translate(50%, 50%);
+        }
+        
+        .decorations {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            font-size: 2em;
+        }
+        
+        .results-section {
+            background: rgba(244, 228, 193, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            margin-top: 40px;
+            border: 5px solid #228b22;
+            max-width: 600px;
+        }
+        
+        .winner-selection {
+            margin-bottom: 20px;
+        }
+        
+        .winner-selection h3 {
+            color: #1a1a2e;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1em;
+            color: #1a1a2e;
+            cursor: pointer;
+        }
+        
+        .radio-option input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .tasting-notes {
+            margin-top: 20px;
+        }
+        
+        .tasting-notes h3 {
+            color: #1a1a2e;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+        
+        .tasting-notes textarea {
+            width: 100%;
+            padding: 15px;
+            font-size: 1em;
+            border: 3px solid #1a1a2e;
+            border-radius: 8px;
+            resize: vertical;
+            min-height: 100px;
+            font-family: Arial, sans-serif;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            font-size: 1.4em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #dc143c 0%, #a00000 100%);
+            color: #f4e4c1;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #ff1744 0%, #dc143c 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(0,0,0,0.4);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+    </style>
 </head>
 <body>
-<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
-<p class="p1"><span class="s1">&lt;html lang="en"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;head&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;title&gt;PIE VS PIE&lt;/title&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;style&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>* {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin: 0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>box-sizing: border-box;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>body {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-family: 'Arial Black', sans-serif;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>min-height: 100vh;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: flex;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>flex-direction: column;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>align-items: center;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>justify-content: center;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 20px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>h1 {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #f4e4c1;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 4em;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>text-shadow: 3px 3px 0 #dc143c;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 30px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>letter-spacing: 8px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.vs {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #dc143c;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: inline-block;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>transform: rotate(-5deg);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.fight-card {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: rgba(244, 228, 193, 0.95);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 30px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 15px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>box-shadow: 0 10px 30px rgba(0,0,0,0.5);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 40px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border: 5px solid #dc143c;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.pie-code-section {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>text-align: center;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 25px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding-bottom: 20px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-bottom: 3px dashed #dc143c;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.pie-code-section label {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: block;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 1.4em;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 10px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #dc143c;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-weight: bold;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>letter-spacing: 2px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.pie-code-section input {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 12px 20px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 1.2em;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border: 3px solid #1a1a2e;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 8px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: white;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>text-align: center;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-weight: bold;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>min-width: 300px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>text-transform: uppercase;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.fighter-selection {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: flex;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>gap: 40px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>align-items: center;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>justify-content: center;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.fighter {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>text-align: center;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.fighter label {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: block;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 1.2em;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 10px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #1a1a2e;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.fighter select {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 12px 20px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 1.1em;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border: 3px solid #1a1a2e;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 8px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: white;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>cursor: pointer;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-weight: bold;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>min-width: 220px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.vs-text {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 2.5em;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #dc143c;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-weight: bold;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>text-shadow: 2px 2px 0 #1a1a2e;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.ring {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 500px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>height: 400px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>position: relative;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin: 0 auto;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>perspective: 1000px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.pie-ring {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 350px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>height: 350px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>position: absolute;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>left: 50%;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>top: 50%;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>transform: translate(-50%, -50%) rotateX(60deg);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>transform-style: preserve-3d;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.pie-base {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 100%;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>height: 100%;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: #d4a574;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 50%;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>position: absolute;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>box-shadow: 0 20px 40px rgba(0,0,0,0.5);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border: 8px solid #8b4513;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.pie-top {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 100%;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>height: 100%;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: linear-gradient(135deg, #f4e4c1 0%, #e6d4a8 100%);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 50%;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>position: absolute;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>top: -30px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>box-shadow: inset 0 -10px 20px rgba(0,0,0,0.2);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border: 8px solid #8b4513;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.pie-divider {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>position: absolute;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 100%;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>height: 2px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: #8b4513;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>top: 50%;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>left: 0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>transform: translateY(-50%);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>z-index: 10;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.quadrant {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>position: absolute;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 50%;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>height: 50%;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: flex;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>align-items: center;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>justify-content: center;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 3em;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.red-corner {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>top: 0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>left: 0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: rgba(220, 20, 60, 0.3);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 100% 0 0 0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.white-corner {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>bottom: 0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>right: 0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: rgba(255, 255, 255, 0.3);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 0 0 100% 0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.fighter-img {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 160px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>height: 160px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>position: absolute;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>transition: all 0.3s ease;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>z-index: 20;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.fighter-img.red {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>top: 25%;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>left: 25%;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>transform: translate(-50%, -50%);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.fighter-img.white {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>bottom: 25%;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>right: 25%;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>transform: translate(50%, 50%);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.decorations {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>position: absolute;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>top: -30px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>left: 50%;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>transform: translateX(-50%);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: flex;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>gap: 15px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 2em;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.results-section {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: rgba(244, 228, 193, 0.95);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 30px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 15px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>box-shadow: 0 10px 30px rgba(0,0,0,0.5);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-top: 40px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border: 5px solid #228b22;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>max-width: 600px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.winner-selection {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 20px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.winner-selection h3 {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #1a1a2e;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 15px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 1.3em;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.radio-group {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: flex;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>gap: 30px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>justify-content: center;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.radio-option {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: flex;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>align-items: center;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>gap: 10px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 1.1em;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #1a1a2e;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>cursor: pointer;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.radio-option input[type="radio"] {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 20px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>height: 20px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>cursor: pointer;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.tasting-notes {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-top: 20px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.tasting-notes h3 {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #1a1a2e;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 10px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 1.3em;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.tasting-notes textarea {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 100%;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 15px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 1em;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border: 3px solid #1a1a2e;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 8px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>resize: vertical;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>min-height: 100px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-family: Arial, sans-serif;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.submit-btn {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 100%;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 18px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 1.4em;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-weight: bold;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: linear-gradient(135deg, #dc143c 0%, #a00000 100%);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #f4e4c1;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border: none;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 10px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>cursor: pointer;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-top: 25px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>box-shadow: 0 5px 15px rgba(0,0,0,0.3);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>transition: all 0.3s ease;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>text-transform: uppercase;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>letter-spacing: 2px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.submit-btn:hover {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: linear-gradient(135deg, #ff1744 0%, #dc143c 100%);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>transform: translateY(-2px);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>box-shadow: 0 7px 20px rgba(0,0,0,0.4);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.submit-btn:active {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>transform: translateY(0);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
-<p class="p1"><span class="s1">&lt;body&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;h1&gt;PIE &lt;span class="vs"&gt;VS&lt;/span&gt; PIE&lt;/h1&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="fight-card"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="pie-code-section"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;label for="pieCode"&gt;PIE-GHT NUMBER&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;input type="text" id="pieCode" placeholder="Enter verification code (e.g. PIE-2024-001)"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="fighter-selection"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="fighter"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;label&gt;RED CORNER&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;select id="redFighter"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Alan Star&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Crustia Twinkleman&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Stephen Pie&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Piemon Cowell&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Oscar Pastry&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Linford Crusty&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Princess Pieanna&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Sultana of Bruneye&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Miley Pierus&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Edwina Currant&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Brandy Toksvig&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Crustin Hoffman&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Crusty Springfield&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Camilla Mixing-Bowls&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Bake Whitehall&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Piela Radcliffe&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Alan Sugar&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Liz Crust&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Sugar Pie Leonard&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Mince Tyson&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Cake Paul&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Fruit Mayweather&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/select&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="vs-text"&gt;VS&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="fighter"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;label&gt;WHITE CORNER&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;select id="whiteFighter"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Alan Star&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Crustia Twinkleman&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Stephen Pie&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Piemon Cowell&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Oscar Pastry&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Linford Crusty&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Princess Pieanna&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Sultana of Bruneye&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Miley Pierus&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Edwina Currant&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Brandy Toksvig&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Crustin Hoffman&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Crusty Springfield&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Camilla Mixing-Bowls&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Bake Whitehall&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Piela Radcliffe&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Alan Sugar&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Liz Crust&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Sugar Pie Leonard&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Mince Tyson&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Cake Paul&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option&gt;Fruit Mayweather&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/select&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="ring"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="decorations"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>🎄 ⭐ 🎄</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="pie-ring"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="pie-base"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="pie-top"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="pie-divider"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="quadrant red-corner"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="quadrant white-corner"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;svg class="fighter-img red" id="redFighterImg" viewBox="0 0 200 200"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;circle cx="100" cy="70" r="40" fill="#f4e4c1" stroke="#8b4513" stroke-width="4"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;ellipse cx="85" cy="65" rx="8" ry="12" fill="#1a1a2e"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;ellipse cx="115" cy="65" rx="8" ry="12" fill="#1a1a2e"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;path d="M 80 85 Q 100 95 120 85" stroke="#1a1a2e" stroke-width="3" fill="none"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;rect x="60" y="110" width="80" height="70" rx="10" fill="#dc143c"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;circle cx="100" cy="140" r="15" fill="#f4e4c1"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;rect x="50" y="120" width="20" height="50" rx="10" fill="#f4e4c1"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;rect x="130" y="120" width="20" height="50" rx="10" fill="#f4e4c1"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;path d="M 70 50 L 80 40 L 90 50" fill="none" stroke="#dc143c" stroke-width="3"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/svg&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;svg class="fighter-img white" id="whiteFighterImg" viewBox="0 0 200 200"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;circle cx="100" cy="70" r="40" fill="#f4e4c1" stroke="#8b4513" stroke-width="4"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;ellipse cx="85" cy="65" rx="8" ry="12" fill="#1a1a2e"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;ellipse cx="115" cy="65" rx="8" ry="12" fill="#1a1a2e"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;path d="M 80 85 Q 100 95 120 85" stroke="#1a1a2e" stroke-width="3" fill="none"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;rect x="60" y="110" width="80" height="70" rx="10" fill="white" stroke="#8b4513" stroke-width="2"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;circle cx="100" cy="140" r="15" fill="#f4e4c1"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;rect x="50" y="120" width="20" height="50" rx="10" fill="#f4e4c1"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;rect x="130" y="120" width="20" height="50" rx="10" fill="#f4e4c1"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;circle cx="100" cy="40" r="15" fill="#228b22"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;circle cx="95" cy="35" r="4" fill="#dc143c"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;circle cx="105" cy="35" r="4" fill="#dc143c"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;circle cx="100" cy="30" r="4" fill="#dc143c"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/svg&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="results-section"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="winner-selection"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;h3&gt;🏆 DECLARE WINNER&lt;/h3&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="radio-group"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;label class="radio-option"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;input type="radio" name="winner" value="red"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;span id="redLabel"&gt;Red Corner&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;label class="radio-option"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;input type="radio" name="winner" value="white"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;span id="whiteLabel"&gt;White Corner&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="tasting-notes"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;h3&gt;📝 TASTING NOTES&lt;/h3&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;textarea id="tastingNotes" placeholder="Describe the battle... Was it flaky? Crispy? A knockout performance?"&gt;&lt;/textarea&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;button id="submitBtn" class="submit-btn"&gt;SUBMIT RESULTS 🥊&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSe7Xdtue5Ezn98pmo15q1gubsog5oW7hhBBx_j0aLDj34Fbng/formResponse';</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const redSelect = document.getElementById('redFighter');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const whiteSelect = document.getElementById('whiteFighter');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const redLabel = document.getElementById('redLabel');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const whiteLabel = document.getElementById('whiteLabel');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const redFighterImg = document.getElementById('redFighterImg');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const whiteFighterImg = document.getElementById('whiteFighterImg');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const winnerRadios = document.querySelectorAll('input[name="winner"]');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const pieCode = document.getElementById('pieCode');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const tastingNotes = document.getElementById('tastingNotes');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const submitBtn = document.getElementById('submitBtn');</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>console.log('Elements found:', {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>redSelect: !!redSelect,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>whiteSelect: !!whiteSelect,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>pieCode: !!pieCode,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>tastingNotes: !!tastingNotes,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>submitBtn: !!submitBtn</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>});</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Update labels when fighters change</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>redSelect.addEventListener('change', () =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>redLabel.textContent = redSelect.value;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>updateFighterOptions();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>});</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>whiteSelect.addEventListener('change', () =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>whiteLabel.textContent = whiteSelect.value;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>updateFighterOptions();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>});</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Prevent selecting the same fighter in both corners</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function updateFighterOptions() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const redValue = redSelect.value;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const whiteValue = whiteSelect.value;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Disable red fighter's option in white dropdown</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>Array.from(whiteSelect.options).forEach(option =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>option.disabled = (option.value === redValue);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Disable white fighter's option in red dropdown</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>Array.from(redSelect.options).forEach(option =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>option.disabled = (option.value === whiteValue);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// If the same fighter is selected in both, change one</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (redValue === whiteValue) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>// Find first available option in white corner</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>for (let option of whiteSelect.options) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>if (!option.disabled &amp;&amp; option.value !== redValue) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>whiteSelect.value = option.value;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>whiteLabel.textContent = option.value;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>break;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Initialize labels</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>redLabel.textContent = redSelect.value;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>whiteLabel.textContent = whiteSelect.value;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>updateFighterOptions();</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Handle winner selection</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>winnerRadios.forEach(radio =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>radio.addEventListener('change', (e) =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>if (e.target.value === 'red') {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>// Red wins</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>redFighterImg.innerHTML = `</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;circle cx="100" cy="70" r="40" fill="#f4e4c1" stroke="#8b4513" stroke-width="4"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;ellipse cx="85" cy="65" rx="8" ry="12" fill="#1a1a2e"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;ellipse cx="115" cy="65" rx="8" ry="12" fill="#1a1a2e"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;path d="M 80 85 Q 100 75 120 85" stroke="#1a1a2e" stroke-width="3" fill="none"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;rect x="60" y="110" width="80" height="70" rx="10" fill="#dc143c"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;circle cx="100" cy="140" r="15" fill="#f4e4c1"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;rect x="50" y="100" width="20" height="50" rx="10" fill="#f4e4c1" transform="rotate(-45 60 125)"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;rect x="130" y="100" width="20" height="50" rx="10" fill="#f4e4c1" transform="rotate(45 140 125)"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;path d="M 70 50 L 80 40 L 90 50" fill="none" stroke="#dc143c" stroke-width="3"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;text x="100" y="30" font-size="30" text-anchor="middle" fill="#ffd700"&gt;👑&lt;/text&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>`;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>// White loses</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>whiteFighterImg.innerHTML = `</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;circle cx="100" cy="70" r="40" fill="#f4e4c1" stroke="#8b4513" stroke-width="4"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;ellipse cx="85" cy="65" rx="6" ry="6" fill="#1a1a2e"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;ellipse cx="115" cy="65" rx="6" ry="6" fill="#1a1a2e"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;path d="M 80 90 Q 100 85 120 90" stroke="#1a1a2e" stroke-width="3" fill="none"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;rect x="60" y="110" width="80" height="70" rx="10" fill="white" stroke="#8b4513" stroke-width="2"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;circle cx="100" cy="140" r="15" fill="#f4e4c1"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;rect x="50" y="120" width="20" height="50" rx="10" fill="#f4e4c1"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;rect x="130" y="120" width="20" height="50" rx="10" fill="#f4e4c1"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;circle cx="100" cy="40" r="15" fill="#228b22"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;text x="70" y="40" font-size="20"&gt;⭐&lt;/text&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;text x="110" y="30" font-size="20"&gt;⭐&lt;/text&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;text x="90" y="25" font-size="20"&gt;⭐&lt;/text&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>} else if (e.target.value === 'white') {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>// White wins</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>whiteFighterImg.innerHTML = `</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;circle cx="100" cy="70" r="40" fill="#f4e4c1" stroke="#8b4513" stroke-width="4"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;ellipse cx="85" cy="65" rx="8" ry="12" fill="#1a1a2e"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;ellipse cx="115" cy="65" rx="8" ry="12" fill="#1a1a2e"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;path d="M 80 85 Q 100 75 120 85" stroke="#1a1a2e" stroke-width="3" fill="none"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;rect x="60" y="110" width="80" height="70" rx="10" fill="white" stroke="#8b4513" stroke-width="2"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;circle cx="100" cy="140" r="15" fill="#f4e4c1"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;rect x="50" y="100" width="20" height="50" rx="10" fill="#f4e4c1" transform="rotate(-45 60 125)"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;rect x="130" y="100" width="20" height="50" rx="10" fill="#f4e4c1" transform="rotate(45 140 125)"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;circle cx="100" cy="40" r="15" fill="#228b22"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;circle cx="95" cy="35" r="4" fill="#dc143c"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;circle cx="105" cy="35" r="4" fill="#dc143c"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;circle cx="100" cy="30" r="4" fill="#dc143c"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;text x="100" y="25" font-size="30" text-anchor="middle" fill="#ffd700"&gt;👑&lt;/text&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>`;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>// Red loses</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>redFighterImg.innerHTML = `</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;circle cx="100" cy="70" r="40" fill="#f4e4c1" stroke="#8b4513" stroke-width="4"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;ellipse cx="85" cy="65" rx="6" ry="6" fill="#1a1a2e"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;ellipse cx="115" cy="65" rx="6" ry="6" fill="#1a1a2e"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;path d="M 80 90 Q 100 85 120 90" stroke="#1a1a2e" stroke-width="3" fill="none"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;rect x="60" y="110" width="80" height="70" rx="10" fill="#dc143c"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;circle cx="100" cy="140" r="15" fill="#f4e4c1"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;rect x="50" y="120" width="20" height="50" rx="10" fill="#f4e4c1"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;rect x="130" y="120" width="20" height="50" rx="10" fill="#f4e4c1"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;path d="M 70 50 L 80 40 L 90 50" fill="none" stroke="#dc143c" stroke-width="3"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;text x="70" y="40" font-size="20"&gt;⭐&lt;/text&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;text x="110" y="30" font-size="20"&gt;⭐&lt;/text&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;text x="90" y="25" font-size="20"&gt;⭐&lt;/text&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>});</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Handle form submission</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>submitBtn.addEventListener('click', () =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const selectedWinner = document.querySelector('input[name="winner"]:checked');</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Validation</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (!pieCode.value.trim()) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>alert('⚠️ Please enter a PIE-GHT NUMBER for verification!');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>return;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (!selectedWinner) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>alert('⚠️ Please declare a winner!');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>return;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Prepare form data</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const formData = {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>pieCode: pieCode.value.trim(),</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>redFighter: redSelect.value,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>whiteFighter: whiteSelect.value,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>winner: selectedWinner.value === 'red' ? redSelect.value : whiteSelect.value,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>loser: selectedWinner.value === 'red' ? whiteSelect.value : redSelect.value,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>tastingNotes: tastingNotes.value.trim()</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>};</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>console.log('Submitting to Google Form:', formData);</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Submit to Google Form</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const googleFormData = new URLSearchParams();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>googleFormData.append('entry.2094119789', formData.pieCode);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>googleFormData.append('entry.1745535013', formData.winner);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>googleFormData.append('entry.856455218', formData.loser);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>googleFormData.append('entry.162418582', formData.tastingNotes);</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Use an iframe to submit to avoid CORS issues</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const iframe = document.createElement('iframe');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>iframe.style.display = 'none';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>iframe.name = 'hidden_iframe';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.body.appendChild(iframe);</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const form = document.createElement('form');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>form.target = 'hidden_iframe';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>form.method = 'POST';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>form.action = GOOGLE_FORM_URL;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Add form fields</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const fields = {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'entry.2094119789': formData.pieCode,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'entry.1745535013': formData.winner,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'entry.856455218': formData.loser,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'entry.162418582': formData.tastingNotes</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>};</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>for (const [key, value] of Object.entries(fields)) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const input = document.createElement('input');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>input.type = 'hidden';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>input.name = key;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>input.value = value;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>form.appendChild(input);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.body.appendChild(form);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>form.submit();</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Show success message immediately</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>alert(`✅ FIGHT RESULTS SUBMITTED!\n\nPie-ght #: ${formData.pieCode}\n${formData.redFighter} vs ${formData.whiteFighter}\nWinner: ${formData.winner}\nLoser: ${formData.loser}\n\nThank you for judging!`);</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Clean up</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>setTimeout(() =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>document.body.removeChild(form);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>document.body.removeChild(iframe);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}, 1000);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
+    <h1>PIE <span class="vs">VS</span> PIE</h1>
+    
+    <div class="fight-card">
+        <div class="pie-code-section">
+            <label for="pieCode">PIE-GHT NUMBER</label>
+            <input type="text" id="pieCode" placeholder="Enter verification code (e.g. PIE-2024-001)">
+        </div>
+        <div class="fighter-selection">
+            <div class="fighter">
+                <label>RED CORNER</label>
+                <select id="redFighter">
+                    <option>Alan Star</option>
+                    <option>Crustia Twinkleman</option>
+                    <option>Stephen Pie</option>
+                    <option>Piemon Cowell</option>
+                    <option>Oscar Pastry</option>
+                    <option>Linford Crusty</option>
+                    <option>Princess Pieanna</option>
+                    <option>Sultana of Bruneye</option>
+                    <option>Miley Pierus</option>
+                    <option>Edwina Currant</option>
+                    <option>Brandy Toksvig</option>
+                    <option>Crustin Hoffman</option>
+                    <option>Crusty Springfield</option>
+                    <option>Camilla Mixing-Bowls</option>
+                    <option>Bake Whitehall</option>
+                    <option>Piela Radcliffe</option>
+                    <option>Alan Sugar</option>
+                    <option>Liz Crust</option>
+                    <option>Sugar Pie Leonard</option>
+                    <option>Mince Tyson</option>
+                    <option>Cake Paul</option>
+                    <option>Fruit Mayweather</option>
+                </select>
+            </div>
+            
+            <div class="vs-text">VS</div>
+            
+            <div class="fighter">
+                <label>WHITE CORNER</label>
+                <select id="whiteFighter">
+                    <option>Alan Star</option>
+                    <option>Crustia Twinkleman</option>
+                    <option>Stephen Pie</option>
+                    <option>Piemon Cowell</option>
+                    <option>Oscar Pastry</option>
+                    <option>Linford Crusty</option>
+                    <option>Princess Pieanna</option>
+                    <option>Sultana of Bruneye</option>
+                    <option>Miley Pierus</option>
+                    <option>Edwina Currant</option>
+                    <option>Brandy Toksvig</option>
+                    <option>Crustin Hoffman</option>
+                    <option>Crusty Springfield</option>
+                    <option>Camilla Mixing-Bowls</option>
+                    <option>Bake Whitehall</option>
+                    <option>Piela Radcliffe</option>
+                    <option>Alan Sugar</option>
+                    <option>Liz Crust</option>
+                    <option>Sugar Pie Leonard</option>
+                    <option>Mince Tyson</option>
+                    <option>Cake Paul</option>
+                    <option>Fruit Mayweather</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    
+    <div class="ring">
+        <div class="decorations">
+            🎄 ⭐ 🎄
+        </div>
+        <div class="pie-ring">
+            <div class="pie-base"></div>
+            <div class="pie-top">
+                <div class="pie-divider"></div>
+                <div class="quadrant red-corner"></div>
+                <div class="quadrant white-corner"></div>
+                <svg class="fighter-img red" id="redFighterImg" viewBox="0 0 200 200">
+                    <circle cx="100" cy="70" r="40" fill="#f4e4c1" stroke="#8b4513" stroke-width="4"/>
+                    <ellipse cx="85" cy="65" rx="8" ry="12" fill="#1a1a2e"/>
+                    <ellipse cx="115" cy="65" rx="8" ry="12" fill="#1a1a2e"/>
+                    <path d="M 80 85 Q 100 95 120 85" stroke="#1a1a2e" stroke-width="3" fill="none"/>
+                    <rect x="60" y="110" width="80" height="70" rx="10" fill="#dc143c"/>
+                    <circle cx="100" cy="140" r="15" fill="#f4e4c1"/>
+                    <rect x="50" y="120" width="20" height="50" rx="10" fill="#f4e4c1"/>
+                    <rect x="130" y="120" width="20" height="50" rx="10" fill="#f4e4c1"/>
+                    <path d="M 70 50 L 80 40 L 90 50" fill="none" stroke="#dc143c" stroke-width="3"/>
+                </svg>
+                <svg class="fighter-img white" id="whiteFighterImg" viewBox="0 0 200 200">
+                    <circle cx="100" cy="70" r="40" fill="#f4e4c1" stroke="#8b4513" stroke-width="4"/>
+                    <ellipse cx="85" cy="65" rx="8" ry="12" fill="#1a1a2e"/>
+                    <ellipse cx="115" cy="65" rx="8" ry="12" fill="#1a1a2e"/>
+                    <path d="M 80 85 Q 100 95 120 85" stroke="#1a1a2e" stroke-width="3" fill="none"/>
+                    <rect x="60" y="110" width="80" height="70" rx="10" fill="white" stroke="#8b4513" stroke-width="2"/>
+                    <circle cx="100" cy="140" r="15" fill="#f4e4c1"/>
+                    <rect x="50" y="120" width="20" height="50" rx="10" fill="#f4e4c1"/>
+                    <rect x="130" y="120" width="20" height="50" rx="10" fill="#f4e4c1"/>
+                    <circle cx="100" cy="40" r="15" fill="#228b22"/>
+                    <circle cx="95" cy="35" r="4" fill="#dc143c"/>
+                    <circle cx="105" cy="35" r="4" fill="#dc143c"/>
+                    <circle cx="100" cy="30" r="4" fill="#dc143c"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+    
+    <div class="results-section">
+        <div class="winner-selection">
+            <h3>🏆 DECLARE WINNER</h3>
+            <div class="radio-group">
+                <label class="radio-option">
+                    <input type="radio" name="winner" value="red">
+                    <span id="redLabel">Red Corner</span>
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="winner" value="white">
+                    <span id="whiteLabel">White Corner</span>
+                </label>
+            </div>
+        </div>
+        
+        <div class="tasting-notes">
+            <h3>📝 TASTING NOTES</h3>
+            <textarea id="tastingNotes" placeholder="Describe the battle... Was it flaky? Crispy? A knockout performance?"></textarea>
+        </div>
+        
+        <button id="submitBtn" class="submit-btn">SUBMIT RESULTS 🥊</button>
+    </div>
+
+    <script>
+        const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSe7Xdtue5Ezn98pmo15q1gubsog5oW7hhBBx_j0aLDj34Fbng/formResponse';
+        
+        const redSelect = document.getElementById('redFighter');
+        const whiteSelect = document.getElementById('whiteFighter');
+        const redLabel = document.getElementById('redLabel');
+        const whiteLabel = document.getElementById('whiteLabel');
+        const redFighterImg = document.getElementById('redFighterImg');
+        const whiteFighterImg = document.getElementById('whiteFighterImg');
+        const winnerRadios = document.querySelectorAll('input[name="winner"]');
+        const pieCode = document.getElementById('pieCode');
+        const tastingNotes = document.getElementById('tastingNotes');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        console.log('Elements found:', {
+            redSelect: !!redSelect,
+            whiteSelect: !!whiteSelect,
+            pieCode: !!pieCode,
+            tastingNotes: !!tastingNotes,
+            submitBtn: !!submitBtn
+        });
+        
+        // Update labels when fighters change
+        redSelect.addEventListener('change', () => {
+            redLabel.textContent = redSelect.value;
+            updateFighterOptions();
+        });
+        
+        whiteSelect.addEventListener('change', () => {
+            whiteLabel.textContent = whiteSelect.value;
+            updateFighterOptions();
+        });
+        
+        // Prevent selecting the same fighter in both corners
+        function updateFighterOptions() {
+            const redValue = redSelect.value;
+            const whiteValue = whiteSelect.value;
+            
+            // Disable red fighter's option in white dropdown
+            Array.from(whiteSelect.options).forEach(option => {
+                option.disabled = (option.value === redValue);
+            });
+            
+            // Disable white fighter's option in red dropdown
+            Array.from(redSelect.options).forEach(option => {
+                option.disabled = (option.value === whiteValue);
+            });
+            
+            // If the same fighter is selected in both, change one
+            if (redValue === whiteValue) {
+                // Find first available option in white corner
+                for (let option of whiteSelect.options) {
+                    if (!option.disabled && option.value !== redValue) {
+                        whiteSelect.value = option.value;
+                        whiteLabel.textContent = option.value;
+                        break;
+                    }
+                }
+            }
+        }
+        
+        // Initialize labels
+        redLabel.textContent = redSelect.value;
+        whiteLabel.textContent = whiteSelect.value;
+        updateFighterOptions();
+        
+        // Handle winner selection
+        winnerRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                if (e.target.value === 'red') {
+                    // Red wins
+                    redFighterImg.innerHTML = `
+                        <circle cx="100" cy="70" r="40" fill="#f4e4c1" stroke="#8b4513" stroke-width="4"/>
+                        <ellipse cx="85" cy="65" rx="8" ry="12" fill="#1a1a2e"/>
+                        <ellipse cx="115" cy="65" rx="8" ry="12" fill="#1a1a2e"/>
+                        <path d="M 80 85 Q 100 75 120 85" stroke="#1a1a2e" stroke-width="3" fill="none"/>
+                        <rect x="60" y="110" width="80" height="70" rx="10" fill="#dc143c"/>
+                        <circle cx="100" cy="140" r="15" fill="#f4e4c1"/>
+                        <rect x="50" y="100" width="20" height="50" rx="10" fill="#f4e4c1" transform="rotate(-45 60 125)"/>
+                        <rect x="130" y="100" width="20" height="50" rx="10" fill="#f4e4c1" transform="rotate(45 140 125)"/>
+                        <path d="M 70 50 L 80 40 L 90 50" fill="none" stroke="#dc143c" stroke-width="3"/>
+                        <text x="100" y="30" font-size="30" text-anchor="middle" fill="#ffd700">👑</text>
+                    `;
+                    
+                    // White loses
+                    whiteFighterImg.innerHTML = `
+                        <circle cx="100" cy="70" r="40" fill="#f4e4c1" stroke="#8b4513" stroke-width="4"/>
+                        <ellipse cx="85" cy="65" rx="6" ry="6" fill="#1a1a2e"/>
+                        <ellipse cx="115" cy="65" rx="6" ry="6" fill="#1a1a2e"/>
+                        <path d="M 80 90 Q 100 85 120 90" stroke="#1a1a2e" stroke-width="3" fill="none"/>
+                        <rect x="60" y="110" width="80" height="70" rx="10" fill="white" stroke="#8b4513" stroke-width="2"/>
+                        <circle cx="100" cy="140" r="15" fill="#f4e4c1"/>
+                        <rect x="50" y="120" width="20" height="50" rx="10" fill="#f4e4c1"/>
+                        <rect x="130" y="120" width="20" height="50" rx="10" fill="#f4e4c1"/>
+                        <circle cx="100" cy="40" r="15" fill="#228b22"/>
+                        <text x="70" y="40" font-size="20">⭐</text>
+                        <text x="110" y="30" font-size="20">⭐</text>
+                        <text x="90" y="25" font-size="20">⭐</text>
+                    `;
+                } else if (e.target.value === 'white') {
+                    // White wins
+                    whiteFighterImg.innerHTML = `
+                        <circle cx="100" cy="70" r="40" fill="#f4e4c1" stroke="#8b4513" stroke-width="4"/>
+                        <ellipse cx="85" cy="65" rx="8" ry="12" fill="#1a1a2e"/>
+                        <ellipse cx="115" cy="65" rx="8" ry="12" fill="#1a1a2e"/>
+                        <path d="M 80 85 Q 100 75 120 85" stroke="#1a1a2e" stroke-width="3" fill="none"/>
+                        <rect x="60" y="110" width="80" height="70" rx="10" fill="white" stroke="#8b4513" stroke-width="2"/>
+                        <circle cx="100" cy="140" r="15" fill="#f4e4c1"/>
+                        <rect x="50" y="100" width="20" height="50" rx="10" fill="#f4e4c1" transform="rotate(-45 60 125)"/>
+                        <rect x="130" y="100" width="20" height="50" rx="10" fill="#f4e4c1" transform="rotate(45 140 125)"/>
+                        <circle cx="100" cy="40" r="15" fill="#228b22"/>
+                        <circle cx="95" cy="35" r="4" fill="#dc143c"/>
+                        <circle cx="105" cy="35" r="4" fill="#dc143c"/>
+                        <circle cx="100" cy="30" r="4" fill="#dc143c"/>
+                        <text x="100" y="25" font-size="30" text-anchor="middle" fill="#ffd700">👑</text>
+                    `;
+                    
+                    // Red loses
+                    redFighterImg.innerHTML = `
+                        <circle cx="100" cy="70" r="40" fill="#f4e4c1" stroke="#8b4513" stroke-width="4"/>
+                        <ellipse cx="85" cy="65" rx="6" ry="6" fill="#1a1a2e"/>
+                        <ellipse cx="115" cy="65" rx="6" ry="6" fill="#1a1a2e"/>
+                        <path d="M 80 90 Q 100 85 120 90" stroke="#1a1a2e" stroke-width="3" fill="none"/>
+                        <rect x="60" y="110" width="80" height="70" rx="10" fill="#dc143c"/>
+                        <circle cx="100" cy="140" r="15" fill="#f4e4c1"/>
+                        <rect x="50" y="120" width="20" height="50" rx="10" fill="#f4e4c1"/>
+                        <rect x="130" y="120" width="20" height="50" rx="10" fill="#f4e4c1"/>
+                        <path d="M 70 50 L 80 40 L 90 50" fill="none" stroke="#dc143c" stroke-width="3"/>
+                        <text x="70" y="40" font-size="20">⭐</text>
+                        <text x="110" y="30" font-size="20">⭐</text>
+                        <text x="90" y="25" font-size="20">⭐</text>
+                    `;
+                }
+            });
+        });
+        
+        // Handle form submission
+        submitBtn.addEventListener('click', () => {
+            const selectedWinner = document.querySelector('input[name="winner"]:checked');
+            
+            // Validation
+            if (!pieCode.value.trim()) {
+                alert('⚠️ Please enter a PIE-GHT NUMBER for verification!');
+                return;
+            }
+            
+            if (!selectedWinner) {
+                alert('⚠️ Please declare a winner!');
+                return;
+            }
+            
+            // Prepare form data
+            const formData = {
+                pieCode: pieCode.value.trim(),
+                redFighter: redSelect.value,
+                whiteFighter: whiteSelect.value,
+                winner: selectedWinner.value === 'red' ? redSelect.value : whiteSelect.value,
+                loser: selectedWinner.value === 'red' ? whiteSelect.value : redSelect.value,
+                tastingNotes: tastingNotes.value.trim()
+            };
+            
+            console.log('Submitting to Google Form:', formData);
+            
+            // Submit to Google Form
+            const googleFormData = new URLSearchParams();
+            googleFormData.append('entry.2094119789', formData.pieCode);
+            googleFormData.append('entry.1745535013', formData.winner);
+            googleFormData.append('entry.856455218', formData.loser);
+            googleFormData.append('entry.162418582', formData.tastingNotes);
+            
+            // Use an iframe to submit to avoid CORS issues
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.name = 'hidden_iframe';
+            document.body.appendChild(iframe);
+            
+            const form = document.createElement('form');
+            form.target = 'hidden_iframe';
+            form.method = 'POST';
+            form.action = GOOGLE_FORM_URL;
+            
+            // Add form fields
+            const fields = {
+                'entry.2094119789': formData.pieCode,
+                'entry.1745535013': formData.winner,
+                'entry.856455218': formData.loser,
+                'entry.162418582': formData.tastingNotes
+            };
+            
+            for (const [key, value] of Object.entries(fields)) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = key;
+                input.value = value;
+                form.appendChild(input);
+            }
+            
+            document.body.appendChild(form);
+            form.submit();
+            
+            // Show success message immediately
+            alert(`✅ FIGHT RESULTS SUBMITTED!\n\nPie-ght #: ${formData.pieCode}\n${formData.redFighter} vs ${formData.whiteFighter}\nWinner: ${formData.winner}\nLoser: ${formData.loser}\n\nThank you for judging!`);
+            
+            // Clean up
+            setTimeout(() => {
+                document.body.removeChild(form);
+                document.body.removeChild(iframe);
+            }, 1000);
+        });
+    </script>
 </body>
 </html>
