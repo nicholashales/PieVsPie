@@ -379,7 +379,7 @@
     </div>
     
     <div class="ring">
-        <canvas id="arenaCanvas" width="1000" height="600"></canvas>
+        <canvas id="arenaCanvas" width="957" height="800"></canvas>
     </div>
     
     <div class="results-section">
@@ -399,7 +399,7 @@
         
         <div class="tasting-notes">
             <h3>📝 TASTING NOTES</h3>
-            <textarea id="tastingNotes" placeholder="Describe the battle... Was it flaky? Crispy? A knockout performance?"></textarea>
+            <textarea id="tastingNotes" placeholder="Summarise the pies. Did the mince convince? Was the crust a must? Was the flavour to savour?"></textarea>
         </div>
         
         <button id="submitBtn" class="submit-btn">SUBMIT RESULTS 🥊</button>
@@ -461,7 +461,7 @@
                 }
                 drawCanvas();
             };
-            img.src = `images/fighters/original/${filename}-${imageNumber}.png`;
+            img.src = `images/fighters/800h/${filename}-${imageNumber}.png`;
         }
         
         // Draw everything on canvas
@@ -471,18 +471,18 @@
             
             // Draw arena
             if (images.arena) {
-                ctx.drawImage(images.arena, 0, 0, canvas.width, canvas.height);
+                ctx.drawImage(images.arena, 0, canvas.height-542, canvas.width, canvas.width*542/957);
             }
             
             // Calculate fighter sizes and positions (proportional to canvas)
-            const fighterWidth = canvas.width * 0.152; // 15.2% of canvas width
+            const fighterWidth = canvas.width * 0.4; // 40% of canvas width
             
             // Draw red fighter (left side)
             if (images.redFighter) {
                 const aspectRatio = images.redFighter.height / images.redFighter.width;
                 const fighterHeight = fighterWidth * aspectRatio;
-                const x = canvas.width * 0.38 - fighterWidth / 2;
-                const y = canvas.height * 0.25 - fighterHeight / 2;
+                const x = canvas.width * 0.3 - fighterWidth / 2;
+                const y = canvas.height * 0.35 - fighterHeight / 2;
                 ctx.drawImage(images.redFighter, x, y, fighterWidth, fighterHeight);
             }
             
@@ -490,8 +490,8 @@
             if (images.whiteFighter) {
                 const aspectRatio = images.whiteFighter.height / images.whiteFighter.width;
                 const fighterHeight = fighterWidth * aspectRatio;
-                const x = canvas.width * 0.62 - fighterWidth / 2;
-                const y = canvas.height * 0.30 - fighterHeight / 2;
+                const x = canvas.width * 0.7 - fighterWidth / 2;
+                const y = canvas.height * 0.38 - fighterHeight / 2;
                 ctx.drawImage(images.whiteFighter, x, y, fighterWidth, fighterHeight);
             }
         }
