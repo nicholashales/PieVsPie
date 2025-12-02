@@ -50,7 +50,7 @@
         .pie-code-section {
             display: flex;
             align-items: center;
-            justify-content: flex-start; /* left align */
+            justify-content: flex-start;
             gap: 6px;
             margin-bottom: 10px;
             padding-bottom: 6px;
@@ -69,15 +69,15 @@
         }
         
         .pie-code-section input {
-            padding: 4px 8px; /* smaller */
-            font-size: 0.8em; /* smaller text */
+            padding: 4px 8px;
+            font-size: 0.8em;
             border: 2px solid #1a1a2e;
             border-radius: 6px;
             background: white;
             text-align: center;
             font-weight: bold;
             min-width: 0;
-            width: 120px; /* significantly smaller */
+            width: 120px;
             max-width: 140px;
             text-transform: uppercase;
         }
@@ -125,54 +125,17 @@
         .ring {
             width: 100%;
             max-width: 1000px;
-            height: 600px;
-            position: relative;
             margin: 20px auto 0;
-            perspective: 1000px;
-        }
-        
-        .pie-ring {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            background-image: url('https://pievspie.online/images/other/original/Arena.png');
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-        
-        .fighter-img {
-            width: 15.2%; /* 20% smaller */ /* scales with arena width (approx 192px at 1000px ring) */
-            height: auto; /* maintain aspect ratio of fighter images */
-            position: absolute;
-            transition: all 0.3s ease;
-            z-index: 20;
-            object-fit: contain;
-        }
-        
-        .fighter-img.red {
-            bottom: 75%; /* raise feet by 10% */
-            left: 38%;
-            transform: translate(-50%, 50%);
-        }
-        
-        .fighter-img.white {
-            bottom: 70%;
-            right: 38%;
-            transform: translate(50%, 50%);
-        }
-        
-        .decorations {
-            position: absolute;
-            top: -30px;
-            left: 50%;
-            transform: translateX(-50%);
             display: flex;
-            gap: 15px;
-            font-size: 2em;
+            justify-content: center;
+        }
+        
+        #arenaCanvas {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
         
         .results-section {
@@ -315,9 +278,6 @@
             }
 
             .ring {
-                width: 100%;
-                max-width: 100%;
-                height: 300px;
                 margin-top: 12px;
             }
 
@@ -351,6 +311,8 @@
             <div class="fighter" style="text-align:left; width:auto; max-width:260px; align-self:flex-start;">
                 <label>RED CORNER</label>
                 <select id="redFighter">
+                    <option>Alan Star</option>
+                    <option>Billie Pieper</option>
                     <option>Brandy Toksvig</option>
                     <option>C3-Pie0</option>
                     <option>Camilla Mixing-Bowls</option>
@@ -372,6 +334,7 @@
                     <option>Pieman Cowell</option>
                     <option>Pieter Schmeichel</option>
                     <option>Princess Pieanna</option>
+                    <option>R2-D-Licious</option>
                     <option>Shortcrustney Dauwalter</option>
                     <option>Stephen Pie</option>
                     <option>The Sultana of Brunei</option>
@@ -383,6 +346,8 @@
             <div class="fighter" style="text-align:right; width:auto; max-width:260px; align-self:flex-end;">
                 <label>WHITE CORNER</label>
                 <select id="whiteFighter">
+                    <option>Alan Star</option>
+                    <option>Billie Pieper</option>
                     <option>Brandy Toksvig</option>
                     <option>C3-Pie0</option>
                     <option>Camilla Mixing-Bowls</option>
@@ -404,6 +369,7 @@
                     <option>Pieman Cowell</option>
                     <option>Pieter Schmeichel</option>
                     <option>Princess Pieanna</option>
+                    <option>R2-D-Licious</option>
                     <option>Shortcrustney Dauwalter</option>
                     <option>Stephen Pie</option>
                     <option>The Sultana of Brunei</option>
@@ -413,13 +379,7 @@
     </div>
     
     <div class="ring">
-        <!--div class="decorations">
-            🎄 ⭐ 🎄
-        </div-->
-        <div class="pie-ring">
-            <img class="fighter-img red" id="redFighterImg" src="https://pievspie.online/images/fighters/original/Brandy-Toksvig-1.png" alt="Red Fighter">
-            <img class="fighter-img white" id="whiteFighterImg" src="https://pievspie.online/images/fighters/original/Brandy-Toksvig-1.png" alt="White Fighter">
-        </div>
+        <canvas id="arenaCanvas" width="1000" height="600"></canvas>
     </div>
     
     <div class="results-section">
@@ -448,40 +408,116 @@
     <script>
         const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSe7Xdtue5Ezn98pmo15q1gubsog5oW7hhBBx_j0aLDj34Fbng/formResponse';
         
+        const canvas = document.getElementById('arenaCanvas');
+        const ctx = canvas.getContext('2d');
+        
         const redSelect = document.getElementById('redFighter');
         const whiteSelect = document.getElementById('whiteFighter');
         const redLabel = document.getElementById('redLabel');
         const whiteLabel = document.getElementById('whiteLabel');
-        const redFighterImg = document.getElementById('redFighterImg');
-        const whiteFighterImg = document.getElementById('whiteFighterImg');
         const winnerRadios = document.querySelectorAll('input[name="winner"]');
         const pieCode = document.getElementById('pieCode');
         const tastingNotes = document.getElementById('tastingNotes');
         const submitBtn = document.getElementById('submitBtn');
+        
+        // Image cache
+        const images = {
+            arena: null,
+            redFighter: null,
+            whiteFighter: null
+        };
+        
+        let currentRedFighter = 'Alan Star';
+        let currentWhiteFighter = 'Alan Star';
+        let redImageNumber = 1;
+        let whiteImageNumber = 1;
         
         // Fighter name to filename mapping
         function getFighterFilename(fighterName) {
             return fighterName.replace(/ /g, '-');
         }
         
-        // Update fighter images when selection changes
-        function updateFighterImage(fighter, imgElement, imageNumber = 1) {
+        // Load and draw arena
+        function loadArena() {
+            const img = new Image();
+            img.onload = () => {
+                images.arena = img;
+                drawCanvas();
+            };
+            img.src = 'images/other/original/Arena.png';
+        }
+        
+        // Load fighter image
+        function loadFighterImage(fighter, corner, imageNumber = 1) {
             const filename = getFighterFilename(fighter);
-            imgElement.src = `https://pievspie.online/images/fighters/original/${filename}-${imageNumber}.png`;
-            imgElement.alt = fighter;
+            const img = new Image();
+            img.onload = () => {
+                if (corner === 'red') {
+                    images.redFighter = img;
+                    redImageNumber = imageNumber;
+                } else {
+                    images.whiteFighter = img;
+                    whiteImageNumber = imageNumber;
+                }
+                drawCanvas();
+            };
+            img.src = `images/fighters/original/${filename}-${imageNumber}.png`;
+        }
+        
+        // Draw everything on canvas
+        function drawCanvas() {
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw arena
+            if (images.arena) {
+                ctx.drawImage(images.arena, 0, 0, canvas.width, canvas.height);
+            }
+            
+            // Calculate fighter sizes and positions (proportional to canvas)
+            const fighterWidth = canvas.width * 0.152; // 15.2% of canvas width
+            
+            // Draw red fighter (left side)
+            if (images.redFighter) {
+                const aspectRatio = images.redFighter.height / images.redFighter.width;
+                const fighterHeight = fighterWidth * aspectRatio;
+                const x = canvas.width * 0.38 - fighterWidth / 2;
+                const y = canvas.height * 0.25 - fighterHeight / 2;
+                ctx.drawImage(images.redFighter, x, y, fighterWidth, fighterHeight);
+            }
+            
+            // Draw white fighter (right side)
+            if (images.whiteFighter) {
+                const aspectRatio = images.whiteFighter.height / images.whiteFighter.width;
+                const fighterHeight = fighterWidth * aspectRatio;
+                const x = canvas.width * 0.62 - fighterWidth / 2;
+                const y = canvas.height * 0.30 - fighterHeight / 2;
+                ctx.drawImage(images.whiteFighter, x, y, fighterWidth, fighterHeight);
+            }
+        }
+        
+        // Update fighter
+        function updateFighter(fighter, corner, imageNumber = 1) {
+            if (corner === 'red') {
+                currentRedFighter = fighter;
+                loadFighterImage(fighter, 'red', imageNumber);
+            } else {
+                currentWhiteFighter = fighter;
+                loadFighterImage(fighter, 'white', imageNumber);
+            }
         }
         
         // Update labels and images when fighters change
         redSelect.addEventListener('change', () => {
             redLabel.textContent = redSelect.value;
-            updateFighterImage(redSelect.value, redFighterImg, 1);
+            updateFighter(redSelect.value, 'red', 1);
             updateFighterOptions();
             resetWinnerState();
         });
         
         whiteSelect.addEventListener('change', () => {
             whiteLabel.textContent = whiteSelect.value;
-            updateFighterImage(whiteSelect.value, whiteFighterImg, 1);
+            updateFighter(whiteSelect.value, 'white', 1);
             updateFighterOptions();
             resetWinnerState();
         });
@@ -503,12 +539,11 @@
             
             // If the same fighter is selected in both, change one
             if (redValue === whiteValue) {
-                // Find first available option in white corner
                 for (let option of whiteSelect.options) {
                     if (!option.disabled && option.value !== redValue) {
                         whiteSelect.value = option.value;
                         whiteLabel.textContent = option.value;
-                        updateFighterImage(option.value, whiteFighterImg, 1);
+                        updateFighter(option.value, 'white', 1);
                         break;
                     }
                 }
@@ -521,51 +556,33 @@
             if (checkedRadio) {
                 checkedRadio.checked = false;
             }
-            updateFighterImage(redSelect.value, redFighterImg, 1);
-            updateFighterImage(whiteSelect.value, whiteFighterImg, 1);
+            updateFighter(currentRedFighter, 'red', 1);
+            updateFighter(currentWhiteFighter, 'white', 1);
         }
-        
-        // Initialize labels and images
-        redLabel.textContent = redSelect.value;
-        whiteLabel.textContent = whiteSelect.value;
-        updateFighterImage(redSelect.value, redFighterImg, 1);
-        updateFighterImage(whiteSelect.value, whiteFighterImg, 1);
-        updateFighterOptions();
         
         // Handle winner selection
         winnerRadios.forEach(radio => {
             radio.addEventListener('change', (e) => {
                 if (e.target.value === 'red') {
                     // Red wins - show victory (image 2) for red, defeat (image 3) for white
-                    updateFighterImage(redSelect.value, redFighterImg, 2);
-                    updateFighterImage(whiteSelect.value, whiteFighterImg, 3);
+                    updateFighter(currentRedFighter, 'red', 2);
+                    updateFighter(currentWhiteFighter, 'white', 3);
                 } else if (e.target.value === 'white') {
                     // White wins - show victory (image 2) for white, defeat (image 3) for red
-                    updateFighterImage(whiteSelect.value, whiteFighterImg, 2);
-                    updateFighterImage(redSelect.value, redFighterImg, 3);
+                    updateFighter(currentWhiteFighter, 'white', 2);
+                    updateFighter(currentRedFighter, 'red', 3);
                 }
             });
         });
         
-        console.log('Elements found:', {
-            redSelect: !!redSelect,
-            whiteSelect: !!whiteSelect,
-            pieCode: !!pieCode,
-            tastingNotes: !!tastingNotes,
-            submitBtn: !!submitBtn
-        });
-        
         // Handle form submission
         if (submitBtn) {
-            console.log('Submit button found, attaching listener');
             submitBtn.addEventListener('click', () => {
-                console.log('Submit button clicked');
-                
                 const selectedWinner = document.querySelector('input[name="winner"]:checked');
                 
                 // Validation
                 if (!pieCode.value.trim()) {
-                    alert('⚠️ Please enter a PIE-GHT NUMBER for verification!');
+                    alert('⚠️ Please enter a PIE CODE for verification!');
                     return;
                 }
                 
@@ -573,8 +590,6 @@
                     alert('⚠️ Please declare a winner!');
                     return;
                 }
-                
-                console.log('Validation passed');
                 
                 // Prepare form data
                 const formData = {
@@ -585,9 +600,6 @@
                     loser: selectedWinner.value === 'red' ? whiteSelect.value : redSelect.value,
                     tastingNotes: tastingNotes.value.trim()
                 };
-                
-                console.log('Form data prepared:', formData);
-                console.log('Submitting to:', GOOGLE_FORM_URL);
                 
                 // Create FormData for submission
                 const googleFormData = new FormData();
@@ -602,17 +614,27 @@
                     mode: 'no-cors',
                     body: googleFormData
                 }).then(() => {
-                    console.log('Submission completed');
                     alert(`✅ FIGHT RESULTS SUBMITTED!\n\nPie-ght #: ${formData.pieCode}\n${formData.redFighter} vs ${formData.whiteFighter}\nWinner: ${formData.winner}\nLoser: ${formData.loser}\n\nThank you for judging!`);
                 }).catch((error) => {
-                    console.error('Submission error:', error);
-                    // Still show success since no-cors doesn't return readable errors
                     alert(`✅ FIGHT RESULTS SUBMITTED!\n\nPie-ght #: ${formData.pieCode}\n${formData.redFighter} vs ${formData.whiteFighter}\nWinner: ${formData.winner}\nLoser: ${formData.loser}\n\nThank you for judging!`);
                 });
             });
-        } else {
-            console.error('Submit button not found!');
         }
+        
+        // Initialize
+        redLabel.textContent = redSelect.value;
+        whiteLabel.textContent = whiteSelect.value;
+        updateFighterOptions();
+        
+        // Load initial arena and fighters
+        loadArena();
+        updateFighter(currentRedFighter, 'red', 1);
+        updateFighter(currentWhiteFighter, 'white', 1);
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            drawCanvas();
+        });
     </script>
 </body>
 </html>
