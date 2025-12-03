@@ -304,76 +304,20 @@
     
     <div class="fight-card">
         <div class="pie-code-section">
-            <label for="pieCode">Pie Code</label>
-            <input type="text" id="pieCode" placeholder="Pie Code">
+            <label for="pieCode">Pie-off Code</label>
+            <input type="text" id="pieCode" placeholder="####">
         </div>
         <div class="fighter-selection">
             <div class="fighter" style="text-align:left; width:auto; max-width:260px; align-self:flex-start;">
                 <label>RED CORNER</label>
-                <select id="redFighter">
-                    <option>Alan Star</option>
-                    <option>Billie Pieper</option>
-                    <option>Brandy Toksvig</option>
-                    <option>C3-Pie0</option>
-                    <option>Camilla Mixing-Bowls</option>
-                    <option>Crustia Winkleman</option>
-                    <option>Crustin Hoffman</option>
-                    <option>Crusty Springfield</option>
-                    <option>Dave Grohlling Pin</option>
-                    <option>Dr Choux</option>
-                    <option>Greggs Davies</option>
-                    <option>Icing Charles</option>
-                    <option>Jasmin Pieris</option>
-                    <option>Kevin Pietersen</option>
-                    <option>Linford Crusty</option>
-                    <option>Miley Pyrus</option>
-                    <option>Mince Pyson</option>
-                    <option>Mr Feast</option>
-                    <option>Oscar Pastry</option>
-                    <option>Piela Radcliffe</option>
-                    <option>Pieman Cowell</option>
-                    <option>Pieter Schmeichel</option>
-                    <option>Princess Pieanna</option>
-                    <option>R2-D-Licious</option>
-                    <option>Shortcrustney Dauwalter</option>
-                    <option>Stephen Pie</option>
-                    <option>The Sultana of Brunei</option>
-                </select>
+                <select id="redFighter"></select>
             </div>
             
             <div class="vs-text">VS</div>
             
             <div class="fighter" style="text-align:right; width:auto; max-width:260px; align-self:flex-end;">
                 <label>WHITE CORNER</label>
-                <select id="whiteFighter">
-                    <option>Alan Star</option>
-                    <option>Billie Pieper</option>
-                    <option>Brandy Toksvig</option>
-                    <option>C3-Pie0</option>
-                    <option>Camilla Mixing-Bowls</option>
-                    <option>Crustia Winkleman</option>
-                    <option>Crustin Hoffman</option>
-                    <option>Crusty Springfield</option>
-                    <option>Dave Grohlling Pin</option>
-                    <option>Dr Choux</option>
-                    <option>Greggs Davies</option>
-                    <option>Icing Charles</option>
-                    <option>Jasmin Pieris</option>
-                    <option>Kevin Pietersen</option>
-                    <option>Linford Crusty</option>
-                    <option>Miley Pyrus</option>
-                    <option>Mince Pyson</option>
-                    <option>Mr Feast</option>
-                    <option>Oscar Pastry</option>
-                    <option>Piela Radcliffe</option>
-                    <option>Pieman Cowell</option>
-                    <option>Pieter Schmeichel</option>
-                    <option>Princess Pieanna</option>
-                    <option>R2-D-Licious</option>
-                    <option>Shortcrustney Dauwalter</option>
-                    <option>Stephen Pie</option>
-                    <option>The Sultana of Brunei</option>
-                </select>
+                <select id="whiteFighter"></select>
             </div>
         </div>
     </div>
@@ -388,11 +332,11 @@
             <div class="radio-group">
                 <label class="radio-option">
                     <input type="radio" name="winner" value="red">
-                    <span id="redLabel">Brandy Toksvig</span>
+                    <span id="redLabel">Alan Star</span>
                 </label>
                 <label class="radio-option">
                     <input type="radio" name="winner" value="white">
-                    <span id="whiteLabel">Brandy Toksvig</span>
+                    <span id="whiteLabel">Billie Pieper</span>
                 </label>
             </div>
         </div>
@@ -407,6 +351,38 @@
 
     <script>
         const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSe7Xdtue5Ezn98pmo15q1gubsog5oW7hhBBx_j0aLDj34Fbng/formResponse';
+        
+        // Single source of truth for fighters with stable IDs
+        const FIGHTERS = [
+            { id: 1, name: 'Alan Star' },
+            { id: 2, name: 'Billie Pieper' },
+            { id: 3, name: 'Brandy Toksvig' },
+            { id: 4, name: 'C3-Pie0' },
+            { id: 5, name: 'Camilla Mixing-Bowls' },
+            { id: 6, name: 'Crustia Winkleman' },
+            { id: 7, name: 'Crustin Hoffman' },
+            { id: 8, name: 'Crusty Springfield' },
+            { id: 9, name: 'Dave Grohlling Pin' },
+            { id: 10, name: 'Dr Choux' },
+            { id: 11, name: 'Greggs Davies' },
+            { id: 12, name: 'Icing Charles' },
+            { id: 13, name: 'Jasmin Pieris' },
+            { id: 14, name: 'Kevin Pietersen' },
+            { id: 15, name: 'Linford Crusty' },
+            { id: 16, name: 'Luke Piewalker' },
+            { id: 17, name: 'Miley Pyrus' },
+            { id: 18, name: 'Mince Pyson' },
+            { id: 19, name: 'Mr Feast' },
+            { id: 20, name: 'Oscar Pastry' },
+            { id: 21, name: 'Piela Radcliffe' },
+            { id: 22, name: 'Pieman Cowell' },
+            { id: 23, name: 'Pieter Schmeichel' },
+            { id: 24, name: 'Princess Pieanna' },
+            { id: 25, name: 'R2-D-Licious' },
+            { id: 26, name: 'Shortcrustney Dauwalter' },
+            { id: 27, name: 'Stephen Pie' },
+            { id: 28, name: 'The Sultana of Brunei' }
+        ];
         
         const canvas = document.getElementById('arenaCanvas');
         const ctx = canvas.getContext('2d');
@@ -428,13 +404,69 @@
         };
         
         let currentRedFighter = 'Alan Star';
-        let currentWhiteFighter = 'Alan Star';
+        let currentWhiteFighter = 'Billie Pieper';
         let redImageNumber = 1;
         let whiteImageNumber = 1;
         
-        // Fighter name to filename mapping
+        // Helper functions
+        function getFighterById(id) {
+            return FIGHTERS.find(f => f.id === parseInt(id));
+        }
+        
+        function getFighterByName(name) {
+            return FIGHTERS.find(f => f.name === name);
+        }
+        
         function getFighterFilename(fighterName) {
             return fighterName.replace(/ /g, '-');
+        }
+        
+        // Populate dropdowns
+        function populateDropdowns() {
+            FIGHTERS.forEach(fighter => {
+                const option1 = document.createElement('option');
+                option1.value = fighter.name;
+                option1.textContent = fighter.name;
+                option1.dataset.id = fighter.id;
+                redSelect.appendChild(option1);
+                
+                const option2 = document.createElement('option');
+                option2.value = fighter.name;
+                option2.textContent = fighter.name;
+                option2.dataset.id = fighter.id;
+                whiteSelect.appendChild(option2);
+            });
+        }
+        
+        // Parse URL parameters
+        function parseURLParams() {
+            const params = new URLSearchParams(window.location.search);
+            
+            // Pie code
+            const code = params.get('code');
+            if (code) {
+                pieCode.value = code;
+            }
+            
+            // Red fighter
+            const redId = params.get('red');
+            if (redId) {
+                const fighter = getFighterById(redId);
+                if (fighter) {
+                    redSelect.value = fighter.name;
+                    currentRedFighter = fighter.name;
+                }
+            }
+            
+            // White fighter
+            const whiteId = params.get('white');
+            if (whiteId) {
+                const fighter = getFighterById(whiteId);
+                if (fighter) {
+                    whiteSelect.value = fighter.name;
+                    currentWhiteFighter = fighter.name;
+                }
+            }
         }
         
         // Load and draw arena
@@ -466,18 +498,14 @@
         
         // Draw everything on canvas
         function drawCanvas() {
-            // Clear canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            // Draw arena
             if (images.arena) {
                 ctx.drawImage(images.arena, 0, canvas.height-542, canvas.width, canvas.width*542/957);
             }
             
-            // Calculate fighter sizes and positions (proportional to canvas)
-            const fighterWidth = canvas.width * 0.4; // 40% of canvas width
+            const fighterWidth = canvas.width * 0.4;
             
-            // Draw red fighter (left side)
             if (images.redFighter) {
                 const aspectRatio = images.redFighter.height / images.redFighter.width;
                 const fighterHeight = fighterWidth * aspectRatio;
@@ -486,7 +514,6 @@
                 ctx.drawImage(images.redFighter, x, y, fighterWidth, fighterHeight);
             }
             
-            // Draw white fighter (right side)
             if (images.whiteFighter) {
                 const aspectRatio = images.whiteFighter.height / images.whiteFighter.width;
                 const fighterHeight = fighterWidth * aspectRatio;
@@ -527,17 +554,14 @@
             const redValue = redSelect.value;
             const whiteValue = whiteSelect.value;
             
-            // Disable red fighter's option in white dropdown
             Array.from(whiteSelect.options).forEach(option => {
                 option.disabled = (option.value === redValue);
             });
             
-            // Disable white fighter's option in red dropdown
             Array.from(redSelect.options).forEach(option => {
                 option.disabled = (option.value === whiteValue);
             });
             
-            // If the same fighter is selected in both, change one
             if (redValue === whiteValue) {
                 for (let option of whiteSelect.options) {
                     if (!option.disabled && option.value !== redValue) {
@@ -564,11 +588,9 @@
         winnerRadios.forEach(radio => {
             radio.addEventListener('change', (e) => {
                 if (e.target.value === 'red') {
-                    // Red wins - show victory (image 2) for red, defeat (image 3) for white
                     updateFighter(currentRedFighter, 'red', 2);
                     updateFighter(currentWhiteFighter, 'white', 3);
                 } else if (e.target.value === 'white') {
-                    // White wins - show victory (image 2) for white, defeat (image 3) for red
                     updateFighter(currentWhiteFighter, 'white', 2);
                     updateFighter(currentRedFighter, 'red', 3);
                 }
@@ -580,9 +602,8 @@
             submitBtn.addEventListener('click', () => {
                 const selectedWinner = document.querySelector('input[name="winner"]:checked');
                 
-                // Validation
                 if (!pieCode.value.trim()) {
-                    alert('⚠️ Please enter a PIE CODE for verification!');
+                    alert('⚠️ Please enter a Pie-off Code for verification!');
                     return;
                 }
                 
@@ -591,7 +612,6 @@
                     return;
                 }
                 
-                // Prepare form data
                 const formData = {
                     pieCode: pieCode.value.trim(),
                     redFighter: redSelect.value,
@@ -601,37 +621,44 @@
                     tastingNotes: tastingNotes.value.trim()
                 };
                 
-                // Create FormData for submission
                 const googleFormData = new FormData();
                 googleFormData.append('entry.2094119789', formData.pieCode);
                 googleFormData.append('entry.1745535013', formData.winner);
                 googleFormData.append('entry.856455218', formData.loser);
                 googleFormData.append('entry.162418582', formData.tastingNotes);
                 
-                // Submit using fetch
                 fetch(GOOGLE_FORM_URL, {
                     method: 'POST',
                     mode: 'no-cors',
                     body: googleFormData
                 }).then(() => {
-                    alert(`✅ FIGHT RESULTS SUBMITTED!\n\nPie-ght #: ${formData.pieCode}\n${formData.redFighter} vs ${formData.whiteFighter}\nWinner: ${formData.winner}\nLoser: ${formData.loser}\n\nThank you for judging!`);
+                    alert(`✅ FIGHT RESULTS SUBMITTED!\n\nPie-off Code: ${formData.pieCode}\n${formData.redFighter} vs ${formData.whiteFighter}\nWinner: ${formData.winner}\nLoser: ${formData.loser}\n\nThank you for judging!`);
                 }).catch((error) => {
-                    alert(`✅ FIGHT RESULTS SUBMITTED!\n\nPie-ght #: ${formData.pieCode}\n${formData.redFighter} vs ${formData.whiteFighter}\nWinner: ${formData.winner}\nLoser: ${formData.loser}\n\nThank you for judging!`);
+                    alert(`✅ FIGHT RESULTS SUBMITTED!\n\nPie-off Code ${formData.pieCode}\n${formData.redFighter} vs ${formData.whiteFighter}\nWinner: ${formData.winner}\nLoser: ${formData.loser}\n\nThank you for judging!`);
                 });
             });
         }
         
         // Initialize
+        populateDropdowns();
+        parseURLParams();
+        
+        // Set defaults if not set by URL
+        if (!redSelect.value) {
+            redSelect.value = currentRedFighter;
+        }
+        if (!whiteSelect.value) {
+            whiteSelect.value = currentWhiteFighter;
+        }
+        
         redLabel.textContent = redSelect.value;
         whiteLabel.textContent = whiteSelect.value;
         updateFighterOptions();
         
-        // Load initial arena and fighters
         loadArena();
-        updateFighter(currentRedFighter, 'red', 1);
-        updateFighter(currentWhiteFighter, 'white', 1);
+        updateFighter(redSelect.value, 'red', 1);
+        updateFighter(whiteSelect.value, 'white', 1);
         
-        // Handle window resize
         window.addEventListener('resize', () => {
             drawCanvas();
         });
