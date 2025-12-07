@@ -1,675 +1,263 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>PIE VS PIE - Fighter Cards</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <style>
-    :root {
-      --bg: #160f0a;
-      --bg-card: #23150b;
-      --accent: #f2b05c;
-      --text-main: #f8f2e9;
-      --text-muted: #d3c7b4;
-      --border-radius: 18px;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        sans-serif;
-      background: radial-gradient(circle at top, #2a1a10, #0a0705 60%);
-      color: var(--text-main);
-    }
-
-    .page {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 1.25rem 1rem 3rem;
-    }
-
-    header.toolbar {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      backdrop-filter: blur(12px);
-      background: rgba(10, 7, 5, 0.85);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      padding: 0.75rem 1rem;
-      margin: 0 -1rem 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-    }
-
-    .brand {
-      display: flex;
-      flex-direction: column;
-      gap: 0.15rem;
-    }
-
-    .brand-title {
-      letter-spacing: 0.08em;
-      font-weight: 800;
-      text-transform: uppercase;
-      font-size: 0.9rem;
-    }
-
-    .brand-sub {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-    }
-
-    .print-button {
-      border: none;
-      border-radius: 999px;
-      padding: 0.55rem 1.4rem;
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      font-weight: 600;
-      cursor: pointer;
-      background: var(--accent);
-      color: #3d2612;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
-      display: inline-flex;
-      align-items: center;
-      gap: 0.45rem;
-      transition: transform 0.1s ease, box-shadow 0.1s ease,
-        background 0.15s ease;
-    }
-
-    .print-button span.icon {
-      font-size: 1rem;
-    }
-
-    .print-button:hover {
-      transform: translateY(-1px);
-      background: #f8c77d;
-      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.55);
-    }
-
-    .print-button:active {
-      transform: translateY(0);
-      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.6);
-    }
-
-    h1.page-title {
-      font-size: 1.5rem;
-      margin: 0 0 0.75rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      text-align: center;
-    }
-
-    p.page-intro {
-      text-align: center;
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      max-width: 32rem;
-      margin: 0 auto 1.5rem;
-    }
-
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-      gap: 1.25rem;
-    }
-
-    .card {
-      background: radial-gradient(circle at top, #372113, var(--bg-card));
-      border-radius: var(--border-radius);
-      padding: 0.75rem 0.75rem 1rem;
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      border: 1px solid rgba(255, 255, 255, 0.04);
-    }
-
-    .card-inner {
-      background: rgba(0, 0, 0, 0.18);
-      border-radius: calc(var(--border-radius) - 4px);
-      padding: 0.75rem;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .card-image-wrapper {
-      width: 100%;
-      aspect-ratio: 63 / 88; /* trading card-ish proportions */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 0.5rem;
-      overflow: hidden;
-    }
-
-    .card img {
-      max-width: 100%;
-      max-height: 100%;
-      height: auto;
-      display: block;
-    }
-
-    .card-name {
-      font-size: 0.95rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      margin: 0.25rem 0 0.05rem;
-    }
-
-    .card-tagline {
-      font-size: 0.65rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: var(--text-muted);
-    }
-
-    footer.page-footnote {
-      margin-top: 2.5rem;
-      text-align: center;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      opacity: 0.8;
-    }
-
-    /* PRINT STYLES */
-    @media print {
-      @page {
-        size: A4 landscape;
-        margin: 10mm;
-      }
-
-      body {
-        background: #ffffff;
-        color: #000000;
-      }
-
-      header.toolbar,
-      .page-intro,
-      footer.page-footnote {
-        display: none !important;
-      }
-
-      .page {
-        max-width: none;
-        padding: 0;
-      }
-
-      h1.page-title {
-        text-align: left;
-        font-size: 1.1rem;
-        margin: 0 0 4mm;
-      }
-
-      .cards-grid {
-        grid-template-columns: repeat(5, 1fr); /* 5 cards across */
-        gap: 3mm;
-      }
-
-      .card {
-        box-shadow: none;
-        background: #ffffff;
-        border-radius: 1.5mm;
-        border: 0.2mm solid #d0c9c0;
-        page-break-inside: avoid;
-        break-inside: avoid;
-      }
-
-      .card-inner {
-        background: #ffffff;
-        padding: 2mm 2mm 3mm;
-      }
-
-      .card-image-wrapper {
-        margin-bottom: 1.5mm;
-      }
-
-      .card-name {
-        font-size: 0.8rem;
-      }
-
-      .card-tagline {
-        font-size: 0.55rem;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIE VS PIE - Fighter Cards</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        @page {
+            size: A4 landscape;
+            margin: 1mm;
+        }
+        
+        body {
+            font-family: 'Arial Black', sans-serif;
+            background: #1a1a2e;
+        }
+        
+        .page {
+            width: 297mm;
+            height: 210mm;
+            padding: 15mm;
+            padding-top: 8mm;
+            padding-bottom: 8mm;
+            background: white;
+            page-break-after: always;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .page:last-child {
+            page-break-after: auto;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            row-gap: 2mm;
+            height: 100%;
+        }
+        
+        .card {
+            //border: 3px solid #1a1a2e;
+            //border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(135deg, #f4e4c1 0%, #e6d4a8 100%);
+            position: relative;
+            height: 63mm;
+        }
+        
+        .card-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #dc143c 0%, #a00000 100%);
+        }
+        
+        .card-image {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0px;
+            background: white;
+            position: relative;
+        }
+        
+        .watermark {
+            position: absolute;
+            top: 1mm;
+            right: 1mm;
+            font-size: 8px;
+            color: #dc143c;
+            opacity: 0.3;
+            letter-spacing: 1px;
+            font-weight: bold;
+        }
+        
+        .card-image img {
+            max-width: 100%;
+            max-height: 52mm;
+            object-fit: contain;
+        }
+        
+        .card-name {
+            background: #1a1a2e;
+            color: #f4e4c1;
+            text-align: center;
+            padding: 2px 4px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-top: 2px solid #dc143c;
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            
+            .page {
+                margin: 0;
+                page-break-after: always;
+            }
+            
+            .no-print {
+                display: none;
+            }
+        }
+        
+        .print-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 30px;
+            background: #dc143c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            z-index: 1000;
+        }
+        
+        .print-button:hover {
+            background: #a00000;
+        }
+    </style>
 </head>
-
 <body>
-  <div class="page">
-    <header class="toolbar">
-      <div class="brand">
-        <div class="brand-title">PIE VS PIE</div>
-        <div class="brand-sub">Fighter Cards</div>
-      </div>
+    <button class="print-button no-print" onclick="window.print()">🖨️ PRINT CARDS</button>
+    
+    <div id="cardContainer"></div>
 
-      <button class="print-button" onclick="window.print()">
-        <span class="icon">🖨️</span>
-        <span>Print cards</span>
-      </button>
-    </header>
+    <script>
+        // SIMPLE FIGHTER LIST - Edit this to control which fighters appear
+        const fighters = [
+Array(6).fill('Alan Star'),
+Array(4).fill('Billie Pieper'),
+Array(6).fill('Brandy Toksvig'),
+Array(8).fill('C3-Pie0'),
+Array(4).fill('Camilla Mixing-Bowls'),
+Array(6).fill('Crustia Winkleman'),
+Array(4).fill('Crustin Hoffman'),
+Array(6).fill('Crusty Springfield'),
+Array(4).fill('Dave Grohlling Pin'),
+Array(6).fill('Dr Choux'),
+Array(6).fill('Greggs Davies'),
+Array(5).fill('Icing Charles'),
+Array(11).fill('Jasmin Pieris'),
+Array(8).fill('Kevin Pietersen'),
+Array(6).fill('Linford Crusty'),
+Array(6).fill('Luke Piewalker'),
+Array(6).fill('Miley Pyrus'),
+Array(6).fill('Mince Pyson'),
+Array(4).fill('Mr Feast'),
+Array(6).fill('Oscar Pastry'),
+Array(6).fill('Piela Radcliffe'),
+Array(12).fill('Pieman Cowell'),
+Array(8).fill('Pieter Schmeichel'),
+Array(6).fill('Princess Pieanna'),
+Array(12).fill('R2-D-Licious'),
+Array(4).fill('Shortcrustney Dauwalter'),
+Array(6).fill('Stephen Pie'),
+Array(6).fill('The Sultana of Brunei')
+        ].flat();
 
-    <h1 class="page-title">Fighter Cards</h1>
-    <p class="page-intro">
-      All your PIE VS PIE fighters on one page. Use the button above and print
-      this page to get sheets of cards (5 × 3 per A4 landscape page).
-    </p>
+/*
+            'Alan Star',
+            'Billie Pieper',
+            'Brandy Toksvig',
+            'C3-Pie0',
+            'Camilla Mixing-Bowls',
+            'Crustia Winkleman',
+            'Crustin Hoffman',
+            'Crusty Springfield',
+            'Dave Grohlling Pin',
+            'Dr Choux',
+            'Greggs Davies',
+            'Icing Charles',
+            'Jasmin Pieris',
+            'Kevin Pietersen',
+            'Linford Crusty',
+            'Luke Piewalker',
+            'Miley Pyrus',
+            'Mince Pyson',
+            'Mr Feast',
+            'Oscar Pastry',
+            'Piela Radcliffe',
+            'Pieman Cowell',
+            'Pieter Schmeichel',
+            'Princess Pieanna',
+            'R2-D-Licious',
+            'Shortcrustney Dauwalter',
+            'Stephen Pie',
+            'The Sultana of Brunei'
+*/
 
-    <section class="cards-grid">
-      <!-- Alan Star -->
-      <article class="card">
-        <div class="card-inner">
-          <div class="card-image-wrapper">
-            <img
-              src="images/fighters/LabelPoses/Alan-Star-1.png"
-              alt="Alan Star"
-            />
-          </div>
-          <h2 class="card-name">Alan Star</h2>
-          <p class="card-tagline">The Wish-Granter</p>
-        </div>
-      </article>
 
-      <!-- Billie Pieper -->
-      <article class="card">
-        <div class="card-inner">
-          <div class="card-image-wrapper">
-            <img
-              src="images/fighters/LabelPoses/Billie-Pieper-1.png"
-              alt="Billie Pieper"
-            />
-          </div>
-          <h2 class="card-name">Billie Pieper</h2>
-          <p class="card-tagline">Rock ’n’ Roll Crust</p>
-        </div>
-      </article>
+        const CARDS_PER_PAGE = 21;
+        const IMAGE_BASE_URL = 'https://pievspie.online/images/fighters/LabelPoses/';
 
-      <!-- Brandy Toksvig -->
-      <article class="card">
-        <div class="card-inner">
-          <div class="card-image-wrapper">
-            <img
-              src="images/fighters/LabelPoses/Brandy-Toksvig-1.png"
-              alt="Brandy Toksvig"
-            />
-          </div>
-          <h2 class="card-name">Brandy Toksvig</h2>
-          <p class="card-tagline">Quiz of the Crust</p>
-        </div>
-      </article>
+        function getFighterFilename(fighterName) {
+            return fighterName.replace(/ /g, '-');
+        }
 
-      <!-- C3-Pie0 -->
-      <article class="card">
-        <div class="card-inner">
-          <div class="card-image-wrapper">
-            <img
-              src="images/fighters/LabelPoses/C3-Pie0-1.png"
-              alt="C3-Pie0"
-            />
-          </div>
-          <h2 class="card-name">C3-Pie0</h2>
-          <p class="card-tagline">Protocol Pie Droid</p>
-        </div>
-      </article>
+        function createCard(fighterName) {
+            const filename = getFighterFilename(fighterName);
+            return `
+                <div class="card">
+                    <div class="card-image">
+                        <div class="watermark">PIE VS PIE</div>
+                        <img src="${IMAGE_BASE_URL}${filename}-1.png" alt="${fighterName}">
+                    </div>
+                    <div class="card-name">${fighterName}</div>
+                </div>
+            `;
+        }
 
-      <!-- Camilla Mixing-Bowls -->
-      <article class="card">
-        <div class="card-inner">
-          <div class="card-image-wrapper">
-            <img
-              src="images/fighters/LabelPoses/Camilla-Mixing-Bowls-1.png"
-              alt="Camilla Mixing-Bowls"
-            />
-          </div>
-          <h2 class="card-name">Camilla Mixing-Bowls</h2>
-          <p class="card-tagline">Royal Baker</p>
-        </div>
-      </article>
+        function generatePages() {
+            const container = document.getElementById('cardContainer');
+            const totalPages = Math.ceil(fighters.length / CARDS_PER_PAGE);
 
-      <!-- Crustia Winkleman -->
-      <article class="card">
-        <div class="card-inner">
-          <div class="card-image-wrapper">
-            <img
-              src="images/fighters/LabelPoses/Crustia-Winkleman-1.png"
-              alt="Crustia Winkleman"
-            />
-          </div>
-          <h2 class="card-name">Crustia Winkleman</h2>
-          <p class="card-tagline">Dark Dessert Host</p>
-        </div>
-      </article>
+            for (let pageNum = 0; pageNum < totalPages; pageNum++) {
+                const startIdx = pageNum * CARDS_PER_PAGE;
+                const endIdx = Math.min(startIdx + CARDS_PER_PAGE, fighters.length);
+                const pageFighters = fighters.slice(startIdx, endIdx);
 
-      <!-- Crustin Hoffman -->
-      <article class="card">
-        <div class="card-inner">
-          <div class="card-image-wrapper">
-            <img
-              src="images/fighters/LabelPoses/Crustin-Hoffman-1.png"
-              alt="Crustin Hoffman"
-            />
-          </div>
-          <h2 class="card-name">Crustin Hoffman</h2>
-          <p class="card-tagline">Graduate of Pastry</p>
-        </div>
-      </article>
+                const pageHTML = `
+                    <div class="page">
+                        <div class="grid">
+                            ${pageFighters.map(fighter => createCard(fighter)).join('')}
+                        </div>
+                    </div>
+                `;
 
-      <!-- Crusty Springfield -->
-      <article class="card">
-        <div class="card-inner">
-          <div class="card-image-wrapper">
-            <img
-              src="images/fighters/LabelPoses/Crusty-Springfield-1.png"
-              alt="Crusty Springfield"
-            />
-          </div>
-          <h2 class="card-name">Crusty Springfield</h2>
-          <p class="card-tagline">Soul of Shortcrust</p>
-        </div>
-      </article>
+                container.innerHTML += pageHTML;
+            }
+        }
 
-      <!-- Dave Grohlling Pin -->
-      <article class="card">
-        <div class="card-inner">
-          <div class="card-image-wrapper">
-            <img
-              src="images/fighters/LabelPoses/Dave-Grohlling-Pin-1.png"
-              alt="Dave Grohlling Pin"
-            />
-          </div>
-          <h2 class="card-name">Dave Grohlling Pin</h2>
-          <p class="card-tagline">Food Fighter</p>
-        </div>
-      </article>
-
-      <!-- Dr Choux -->
-      <article class="card">
-        <div class="card-inner">
-          <div class="card-image-wrapper">
-            <img
-              src="images/fighters/LabelPoses/Dr-Choux-1.png"
-              alt="Dr Choux"
-            />
-          </div>
-          <h2 class="card-name">Dr Choux</h2>
-          <p class="card-tagline">Time-Travelling Tart</p>
-        </div>
-      </article>
-
-      <!-- Greggs Davies -->
-      <article class="card">
-        <div class="card-inner">
-          <div class="card-image-wrapper">
-            <img
-              src="images/fighters/LabelPoses/Greggs-Davies-1.png"
-              alt="Greggs Davies"
-            />
-          </div>
-          <h2 class="card-name">Greggs Davies</h2>
-          <p class="card-tagline">Throne of Pies</p>
-        </div>
-      </article>
-
-      <!-- Icing Charles -->
-      <article class="card">
-        <div class="card-inner">
-          <div class="card-image-wrapper">
-            <img
-              src="images/fighters/LabelPoses/Icing-Charles-1.png"
-              alt="Icing Charles"
-            />
-          </div>
-          <h2 class="card-name">Icing Charles</h2>
-          <p class="card-tagline">Homeopathic Port-er</p>
-        </div>
-      </article>
-
-      <!-- Jasmin Pieris -->
-      <article class="card">
-        <div class="card-inner">
-          <div class="card-image-wrapper">
-            <img
-              src="images/fighters/LabelPoses/Jasmin-Pieris-1.png"
-              alt="Jasmin Pieris"
-            />
-          </div>
-          <h2 class="card-name">Jasmin Pieris</h2>
-          <p class="card-tagline">Ultra-Trail Tarter</p>
-        </div>
-      </article>
-
-      <!-- Kevin Pietersen -->
-      <article class="card">
-        <div class="card-inner">
-          <div class="card-image-wrapper">
-            <img
-              src="images/fighters/LabelPoses/Kevin-Pietersen-1.png"
-              alt="Kevin Pietersen"
-            />
-          </div>
-          <h2 class="card-name">Kevin Pietersen</h2>
-          <p class="card-tagline">Cricket Crust</p>
-        </div>
-      </article>
-
-      <!-- Linford Crusty -->
-      <article class="card">
-        <div class="card-inner">
-          <div class="card-image-wrapper">
-            <img
-              src="images/fighters/LabelPoses/Linford-Crusty-1.png"
-              alt="Linford Crusty"
-            />
-          </div>
-          <h2 class="card-name">Linford Crusty</h2>
-          <p class="card-tagline">Sprint to the Pie</p>
-        </div>
-      </article>
-
-      <!-- Luke Piewalker -->
-      <article class="card">
-        <div class="card-inner">
-          <div class="card-image-wrapper">
-            <img
-              src="images/fighters/LabelPoses/Luke-Piewalker-1.png"
-              alt="Luke Piewalker"
-            />
-          </div>
-          <h2 class="card-name">Luke Piewalker</h2>
-          <p class="card-tagline">May the Fork Be With You</p>
-        </div>
-      </article>
-
-      <!-- Miley Pyrus -->
-      <article class="card">
-        <div class="card-inner">
-          <div class="card-image-wrapper">
-            <img
-              src="images/fighters/LabelPoses/Miley-Pyrus-1.png"
-              alt="Miley Pyrus"
-            />
-          </div>
-          <h2 class="card-name">Miley Pyrus</h2>
-          <p class="card-tagline">Crust-Breaker</p>
-        </div>
-      </article>
-
-      <!-- Mince Pyson -->
-      <article class="card">
-        <div class="card-inner">
-          <div class="card-image-wrapper">
-            <img
-              src="images/fighters/LabelPoses/Mince-Pyson-1.png"
-              alt="Mince Pyson"
-            />
-          </div>
-          <h2 class="card-name">Mince Pyson</h2>
-          <p class="card-tagline">Heavyweight Filling</p>
-        </div>
-      </article>
-
-      <!-- Mr Feast -->
-      <article class="card">
-        <div class="card-inner">
-          <div class="card-image-wrapper">
-            <img
-              src="images/fighters/LabelPoses/Mr-Feast-1.png"
-              alt="Mr Feast"
-            />
-          </div>
-          <h2 class="card-name">Mr Feast</h2>
-          <p class="card-tagline">Giveaway Glutton</p>
-        </div>
-      </article>
-
-      <!-- Oscar Pastry -->
-      <article class="card">
-        <div class="card-inner">
-          <div class="card-image-wrapper">
-            <img
-              src="images/fighters/LabelPoses/Oscar-Pastry-1.png"
-              alt="Oscar Pastry"
-            />
-          </div>
-          <h2 class="card-name">Oscar Pastry</h2>
-          <p class="card-tagline">Two-Seater Tart</p>
-        </div>
-      </article>
-
-      <!-- Piela Radcliffe -->
-      <article class="card">
-        <div class="card-inner">
-          <div class="card-image-wrapper">
-            <img
-              src="images/fighters/LabelPoses/Piela-Radcliffe-1.png"
-              alt="Piela Radcliffe"
-            />
-          </div>
-          <h2 class="card-name">Piela Radcliffe</h2>
-          <p class="card-tagline">Marathon Mincer</p>
-        </div>
-      </article>
-
-      <!-- Pieman Cowell -->
-      <article class="card">
-        <div class="card-inner">
-          <div class="card-image-wrapper">
-            <img
-              src="images/fighters/LabelPoses/Pieman-Cowell-1.png"
-              alt="Pieman Cowell"
-            />
-          </div>
-          <h2 class="card-name">Pieman Cowell</h2>
-          <p class="card-tagline">Brutal Buttery Judge</p>
-        </div>
-      </article>
-
-      <!-- Pieter Schmeichel -->
-      <article class="card">
-        <div class="card-inner">
-          <div class="card-image-wrapper">
-            <img
-              src="images/fighters/LabelPoses/Pieter-Schmeichel-1.png"
-              alt="Pieter Schmeichel"
-            />
-          </div>
-          <h2 class="card-name">Pieter Schmeichel</h2>
-          <p class="card-tagline">Safe Hands, Hot Pies</p>
-        </div>
-      </article>
-
-      <!-- Princess Pieanna -->
-      <article class="card">
-        <div class="card-inner">
-          <div class="card-image-wrapper">
-            <img
-              src="images/fighters/LabelPoses/Princess-Pieanna-1.png"
-              alt="Princess Pieanna"
-            />
-          </div>
-          <h2 class="card-name">Princess Pieanna</h2>
-          <p class="card-tagline">Once Upon a Tart</p>
-        </div>
-      </article>
-
-      <!-- R2-D-Licious -->
-      <article class="card">
-        <div class="card-inner">
-          <div class="card-image-wrapper">
-            <img
-              src="images/fighters/LabelPoses/R2-D-Licious-1.png"
-              alt="R2-D-Licious"
-            />
-          </div>
-          <h2 class="card-name">R2-D-Licious</h2>
-          <p class="card-tagline">Beep Boop Bake</p>
-        </div>
-      </article>
-
-      <!-- Shortcrustney Dauwalter -->
-      <article class="card">
-        <div class="card-inner">
-          <div class="card-image-wrapper">
-            <img
-              src="images/fighters/LabelPoses/Shortcrustney-Dauwalter-1.png"
-              alt="Shortcrustney Dauwalter"
-            />
-          </div>
-          <h2 class="card-name">Shortcrustney Dauwalter</h2>
-          <p class="card-tagline">Ultra-Pie Runner</p>
-        </div>
-      </article>
-
-      <!-- Stephen Pie -->
-      <article class="card">
-        <div class="card-inner">
-          <div class="card-image-wrapper">
-            <img
-              src="images/fighters/LabelPoses/Stephen-Pie-1.png"
-              alt="Stephen Pie"
-            />
-          </div>
-          <h2 class="card-name">Stephen Pie</h2>
-          <p class="card-tagline">Serious Crustiness</p>
-        </div>
-      </article>
-
-      <!-- The Sultana of Brunei -->
-      <article class="card">
-        <div class="card-inner">
-          <div class="card-image-wrapper">
-            <img
-              src="images/fighters/LabelPoses/The-Sultana-of-Brunei-1.png"
-              alt="The Sultana of Brunei"
-            />
-          </div>
-          <h2 class="card-name">The Sultana of Brunei</h2>
-          <p class="card-tagline">Raisins to Rule</p>
-        </div>
-      </article>
-    </section>
-
-    <footer class="page-footnote">
-      Print this page on sturdy paper or card for best results. For 5 × 3 cards
-      per sheet, use A4 landscape in your print settings.
-    </footer>
-  </div>
+        // Generate all pages on load
+        generatePages();
+    </script>
 </body>
 </html>

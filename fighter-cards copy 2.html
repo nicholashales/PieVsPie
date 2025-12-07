@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIE VS PIE - Fighter Cards</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        @page {
+            size: A4 landscape;
+            margin: 1mm;
+        }
+        
+        body {
+            font-family: 'Arial Black', sans-serif;
+            background: #1a1a2e;
+        }
+        
+        .page {
+            width: 297mm;
+            height: 210mm;
+            padding: 15mm;
+            padding-top: 8mm;
+            Padding-bottom: 8mm;
+            background: white;
+            page-break-after: always;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .page:last-child {
+            page-break-after: auto;
+        }
+        
+        .watermark {
+            position: absolute;
+            top: 1mm;
+            right: 1mm;
+            font-size: 12px;
+            color: #dc143c;
+            opacity: 0.3;
+            letter-spacing: 2px;
+            font-weight: bold;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            row-gap: 2mm;
+            height: 100%;
+        }
+        
+        .card {
+            //border: 3px solid #1a1a2e;
+            //border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(135deg, #f4e4c1 0%, #e6d4a8 100%);
+            //box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            position: relative;
+            height: 65mm;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #dc143c 0%, #a00000 100%);
+        }
+        
+        .card-image {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0px;
+            background: white;
+        }
+        
+        .card-image img {
+            max-width: 100%;
+            max-height: 52mm;
+            object-fit: contain;
+        }
+        
+        .card-name {
+            background: #1a1a2e;
+            color: #f4e4c1;
+            text-align: center;
+            padding: 2px 4px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-top: 2px solid #dc143c;
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            
+            .page {
+                margin: 0;
+                page-break-after: always;
+            }
+            
+            .no-print {
+                display: none;
+            }
+        }
+        
+        .print-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 30px;
+            background: #dc143c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            z-index: 1000;
+        }
+        
+        .print-button:hover {
+            background: #a00000;
+        }
+    </style>
+</head>
+<body>
+    <button class="print-button no-print" onclick="window.print()">🖨️ PRINT CARDS</button>
+    
+    <div class="page">
+        <div class="grid">
+            <div class="card">
+                <div class="card-image">
+                <div class="watermark">PIE VS PIE</div>
+                    <img src="https://pievspie.online/images/fighters/LabelPoses/Alan-Star-1.png" alt="Alan Star">
+                </div>
+                <div class="card-name">Alan Star</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-image">
+                <div class="watermark">PIE VS PIE</div>
+                    <img src="https://pievspie.online/images/fighters/LabelPoses/Billie-Pieper-1.png" alt="Billie Pieper">
+                </div>
+                <div class="card-name">Billie Pieper</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-image">
+                <div class="watermark">PIE VS PIE</div>
+                    <img src="https://pievspie.online/images/fighters/LabelPoses/Brandy-Toksvig-1.png" alt="Brandy Toksvig">
+                </div>
+                <div class="card-name">Brandy Toksvig</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-image">
+                <div class="watermark">PIE VS PIE</div>
+                    <img src="https://pievspie.online/images/fighters/LabelPoses/C3-Pie0-1.png" alt="C3-Pie0">
+                </div>
+                <div class="card-name">C3-Pie0</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-image">
+                <div class="watermark">PIE VS PIE</div>
+                    <img src="https://pievspie.online/images/fighters/LabelPoses/Camilla-Mixing-Bowls-1.png" alt="Camilla Mixing-Bowls">
+                </div>
+                <div class="card-name">Camilla Mixing-Bowls</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-image">
+                <div class="watermark">PIE VS PIE</div>
+                    <img src="https://pievspie.online/images/fighters/LabelPoses/Crustia-Winkleman-1.png" alt="Crustia Winkleman">
+                </div>
+                <div class="card-name">Crustia Winkleman</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-image">
+                <div class="watermark">PIE VS PIE</div>
+                    <img src="https://pievspie.online/images/fighters/LabelPoses/Crustin-Hoffman-1.png" alt="Crustin Hoffman">
+                </div>
+                <div class="card-name">Crustin Hoffman</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-image">
+                <div class="watermark">PIE VS PIE</div>
+                    <img src="https://pievspie.online/images/fighters/LabelPoses/Crusty-Springfield-1.png" alt="Crusty Springfield">
+                </div>
+                <div class="card-name">Crusty Springfield</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-image">
+                <div class="watermark">PIE VS PIE</div>
+                    <img src="https://pievspie.online/images/fighters/LabelPoses/Dave-Grohlling-Pin-1.png" alt="Dave Grohlling Pin">
+                </div>
+                <div class="card-name">Dave Grohlling Pin</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-image">
+                <div class="watermark">PIE VS PIE</div>
+                    <img src="https://pievspie.online/images/fighters/LabelPoses/Dr-Choux-1.png" alt="Dr Choux">
+                </div>
+                <div class="card-name">Dr Choux</div>
+            </div>
+
+            <div class="card">
+                <div class="card-image">
+                <div class="watermark">PIE VS PIE</div>
+                    <img src="https://pievspie.online/images/fighters/LabelPoses/Greggs-Davies-1.png" alt="Greggs Davies">
+                </div>
+                <div class="card-name">Greggs Davies</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-image">
+                <div class="watermark">PIE VS PIE</div>
+                    <img src="https://pievspie.online/images/fighters/LabelPoses/Icing-Charles-1.png" alt="Icing Charles">
+                </div>
+                <div class="card-name">Icing Charles</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-image">
+                <div class="watermark">PIE VS PIE</div>
+                    <img src="https://pievspie.online/images/fighters/LabelPoses/Jasmin-Pieris-1.png" alt="Jasmin Pieris">
+                </div>
+                <div class="card-name">Jasmin Pieris</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-image">
+                <div class="watermark">PIE VS PIE</div>
+                    <img src="https://pievspie.online/images/fighters/LabelPoses/Kevin-Pietersen-1.png" alt="Kevin Pietersen">
+                </div>
+                <div class="card-name">Kevin Pietersen</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-image">
+                <div class="watermark">PIE VS PIE</div>
+                    <img src="https://pievspie.online/images/fighters/LabelPoses/Linford-Crusty-1.png" alt="Linford Crusty">
+                </div>
+                <div class="card-name">Linford Crusty</div>
+            </div>
+
+           
+            <div class="card">
+                <div class="card-image">
+                <div class="watermark">PIE VS PIE</div>
+                    <img src="https://pievspie.online/images/fighters/LabelPoses/Luke-Piewalker-1.png" alt="Luke Piewalker">
+                </div>
+                <div class="card-name">Luke Piewalker</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-image">
+                <div class="watermark">PIE VS PIE</div>
+                    <img src="https://pievspie.online/images/fighters/LabelPoses/Miley-Pyrus-1.png" alt="Miley Pyrus">
+                </div>
+                <div class="card-name">Miley Pyrus</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-image">
+                <div class="watermark">PIE VS PIE</div>
+                    <img src="https://pievspie.online/images/fighters/LabelPoses/Mince-Pyson-1.png" alt="Mince Pyson">
+                </div>
+                <div class="card-name">Mince Pyson</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-image">
+                <div class="watermark">PIE VS PIE</div>
+                    <img src="https://pievspie.online/images/fighters/LabelPoses/Mr-Feast-1.png" alt="Mr Feast">
+                </div>
+                <div class="card-name">Mr Feast</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-image">
+                <div class="watermark">PIE VS PIE</div>
+                    <img src="https://pievspie.online/images/fighters/LabelPoses/Oscar-Pastry-1.png" alt="Oscar Pastry">
+                </div>
+                <div class="card-name">Oscar Pastry</div>
+            </div>
+
+           <div class="card">
+                <div class="card-image">
+                <div class="watermark">PIE VS PIE</div>
+                    <img src="https://pievspie.online/images/fighters/LabelPoses/Piela-Radcliffe-1.png" alt="Piela Radcliffe">
+                </div>
+                <div class="card-name">Piela Radcliffe</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-image">
+                <div class="watermark">PIE VS PIE</div>
+                    <img src="https://pievspie.online/images/fighters/LabelPoses/Pieman-Cowell-1.png" alt="Pieman Cowell">
+                </div>
+                <div class="card-name">Pieman Cowell</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-image">
+                <div class="watermark">PIE VS PIE</div>
+                    <img src="https://pievspie.online/images/fighters/LabelPoses/Pieter-Schmeichel-1.png" alt="Pieter Schmeichel">
+                </div>
+                <div class="card-name">Pieter Schmeichel</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-image">
+                <div class="watermark">PIE VS PIE</div>
+                    <img src="https://pievspie.online/images/fighters/LabelPoses/Princess-Pieanna-1.png" alt="Princess Pieanna">
+                </div>
+                <div class="card-name">Princess Pieanna</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-image">
+                <div class="watermark">PIE VS PIE</div>
+                    <img src="https://pievspie.online/images/fighters/LabelPoses/R2-D-Licious-1.png" alt="R2-D-Licious">
+                </div>
+                <div class="card-name">R2-D-Licious</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-image">
+                <div class="watermark">PIE VS PIE</div>
+                    <img src="https://pievspie.online/images/fighters/LabelPoses/Shortcrustney-Dauwalter-1.png" alt="Shortcrustney Dauwalter">
+                </div>
+                <div class="card-name">Shortcrustney Dauwalter</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-image">
+                <div class="watermark">PIE VS PIE</div>
+                    <img src="https://pievspie.online/images/fighters/LabelPoses/Stephen-Pie-1.png" alt="Stephen Pie">
+                </div>
+                <div class="card-name">Stephen Pie</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-image">
+                <div class="watermark">PIE VS PIE</div>
+                    <img src="https://pievspie.online/images/fighters/LabelPoses/The-Sultana-of-Brunei-1.png" alt="The Sultana of Brunei">
+                </div>
+                <div class="card-name">The Sultana of Brunei</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
