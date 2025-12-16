@@ -151,6 +151,14 @@
             th, td { padding: 6px 4px; font-size: 0.7em; }
             .pie-image { width: 35px; height: 35px; }
         }
+#arenaCanvas {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
     </style>
 </head>
 <body>
@@ -158,12 +166,12 @@
         <h1>PIE VS PIE</h1>
         <div class="subtitle">🏆 FINAL STANDINGS 🏆</div>
  	<div class="ring">
-        	<img src="http://pievspie.online/images/other/original/WinningMatch.png" width="1024" height="808" />
-    	</div>       
+  	</div>       
         <div class="table-container">
             <table id="resultsTable"></table>
-        </div>
-    </div>
+        <img src="http://pievspie.online/images/other/original/WinningMatch.png" width="100%"  />
+</div>
+            </div>
 
     <script>
         const results = [
