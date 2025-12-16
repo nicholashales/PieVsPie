@@ -159,7 +159,7 @@
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
-Div.ring {
+div.ring {
     font-size: 1.6em;
     color: #dc143c;
     font-weight: bold;
@@ -167,6 +167,17 @@ Div.ring {
     align-self: center;
     text-align: center;
 }
+        .watermark {
+            position: relative;
+            margin-top:-10px;
+            //bottom:12px;
+            right: 1mm;
+            font-size: 10px;
+            color: #dc143c;
+            opacity: 0.8;
+            letter-spacing: 1px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -174,7 +185,7 @@ Div.ring {
         <h1>PIE VS PIE</h1>
         <div class="subtitle">🏆 FINAL STANDINGS 🏆</div>
  	<div class="ring">
-   <iframe position="center" src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F890335940100744%2F&show_text=false&width=267&t=0" width="267" height="476" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen="true"></iframe> 	</div>       
+   <iframe position="center" src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F890335940100744%2F&show_text=false&width=267&t=0" width="267" height="476" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen="true"></iframe><div class="watermark">video by Annabelle 	</div>   </div>       
  
    <div class="table-container">
 
@@ -185,15 +196,15 @@ Div.ring {
 
     <script>
         const results = [
-            {rank: 1, pie: "Asda Exceptional", fighter: "Crustia Winkleman", p: 13, w: 11, l: 2, winPct: "84.6%", btl: "7.22", notes: "", finalist: false, dsq: false},
-            {rank: 2, pie: "Waitrose Brown Butter and Cognac", fighter: "Luke Piewalker", p: 13, w: 9, l: 4, winPct: "69.2%", btl: "3.89", notes: "", finalist: true, dsq: false},
-            {rank: 3, pie: "Lidl Deluxe All Butter", fighter: "Stephen Pie", p: 7, w: 6, l: 1, winPct: "85.7%", btl: "2.94", notes: "DSQ: No longer available", finalist: false, dsq: true},
+            {rank: 1, pie: "Asda Exceptional", fighter: "Crustia Winkleman", p: 13, w: 11, l: 2, winPct: "84.6%", btl: "7.22", notes: "Finalist", finalist: true, dsq: false},
+            {rank: 2, pie: "Waitrose Brown Butter and Cognac", fighter: "Luke Piewalker", p: 13, w: 9, l: 4, winPct: "69.2%", btl: "3.89", notes: "Finalist", finalist: true, dsq: false},
+            {rank: 3, pie: "Lidl Deluxe All Butter", fighter: "Stephen Pie", p: 7, w: 6, l: 1, winPct: "85.7%", btl: "2.94", notes: "DSQ from final: No longer available", finalist: false, dsq: true},
             {rank: 4, pie: "M&S Collection", fighter: "Jasmin Pieris", p: 17, w: 12, l: 5, winPct: "70.6%", btl: "1.52", notes: "", finalist: false, dsq: false},
             {rank: 5, pie: "Mr Kipling Signature", fighter: "Camilla Mixing-Bowls", p: 10, w: 6, l: 4, winPct: "60.0%", btl: "1.14", notes: "", finalist: false, dsq: false},
-            {rank: 6, pie: "Aldi All Butter", fighter: "R2-D-Licious", p: 26, w: 14, l: 12, winPct: "53.8%", btl: "1.07", notes: "", finalist: true, dsq: false},
+            {rank: 6, pie: "Aldi All Butter", fighter: "R2-D-Licious", p: 26, w: 14, l: 12, winPct: "53.8%", btl: "1.07", notes: "Finalist", finalist: true, dsq: false},
             {rank: 7, pie: "Aldi Deep Filled", fighter: "Alan Star", p: 5, w: 3, l: 2, winPct: "60.0%", btl: "1.06", notes: "", finalist: false, dsq: false},
             {rank: 8, pie: "Tesco Merry", fighter: "Linford Crusty", p: 5, w: 3, l: 2, winPct: "60.0%", btl: "1.06", notes: "", finalist: false, dsq: false},
-            {rank: 9, pie: "Sainsbury's Taste the Difference", fighter: "The Sultana of Brunei", p: 8, w: 3, l: 5, winPct: "37.5%", btl: "0.96", notes: "", finalist: true, dsq: false},
+            {rank: 9, pie: "Sainsbury's Taste the Difference", fighter: "The Sultana of Brunei", p: 8, w: 3, l: 5, winPct: "37.5%", btl: "0.96", notes: "Finalist", finalist: true, dsq: false},
             {rank: 10, pie: "Iceland Luxury", fighter: "Mince Pyson", p: 6, w: 4, l: 2, winPct: "66.7%", btl: "0.93", notes: "", finalist: false, dsq: false},
             {rank: 11, pie: "Sainsbury's Christmas Carol-mel Mince Pies", fighter: "Billie Pieper", p: 3, w: 1, l: 2, winPct: "33.3%", btl: "0.65", notes: "Wildcard", finalist: false, dsq: false},
             {rank: 12, pie: "Sainsbury's Frangipane", fighter: "Crustin Hoffman", p: 8, w: 4, l: 4, winPct: "50.0%", btl: "0.62", notes: "Wildcard", finalist: false, dsq: false},
