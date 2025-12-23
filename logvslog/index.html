@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOG VS LOG</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            font-family: 'Arial Black', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #f4e4c1;
+            font-size: 4em;
+            text-shadow: 3px 3px 0 #dc143c;
+            margin-bottom: 30px;
+            letter-spacing: 8px;
+        }
+        
+        .vs {
+            color: #dc143c;
+            display: inline-block;
+            transform: rotate(-5deg);
+        }
+        
+        .fight-card {
+            background: rgba(244, 228, 193, 0.95);
+            padding: 16px 18px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            margin-bottom: 18px;
+            border: 5px solid #dc143c;
+            max-width: 520px;
+            width: 100%;
+        }
+        
+        .pie-code-section {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 6px;
+            margin-bottom: 10px;
+            padding-bottom: 6px;
+            border-bottom: 2px dashed #dc143c;
+            text-align: left;
+            width: auto;
+        }
+        
+        .pie-code-section label {
+            font-size: 0.95em;
+            color: #dc143c;
+            font-weight: bold;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            margin-bottom: 0;
+        }
+        
+        .pie-code-section input {
+            padding: 4px 8px;
+            font-size: 0.8em;
+            border: 2px solid #1a1a2e;
+            border-radius: 6px;
+            background: white;
+            text-align: center;
+            font-weight: bold;
+            min-width: 0;
+            width: 120px;
+            max-width: 140px;
+            text-transform: uppercase;
+        }
+        
+        .fighter-selection {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+            align-items: center;
+        }
+        
+        .fighter {
+            text-align: center;
+            flex: 1 1 0;
+        }
+        
+        .fighter label {
+            display: block;
+            font-size: 0.95em;
+            margin-bottom: 4px;
+            color: #1a1a2e;
+        }
+        
+        .fighter select {
+            padding: 8px 10px;
+            font-size: 0.95em;
+            border: 3px solid #1a1a2e;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            font-weight: bold;
+            min-width: 220px;
+            width: auto;
+        }
+        
+        .vs-text {
+            font-size: 1.6em;
+            color: #dc143c;
+            font-weight: bold;
+            text-shadow: 2px 2px 0 #1a1a2e;
+            align-self: center;
+        }
+        
+        .ring {
+            width: 100%;
+            max-width: 1000px;
+            margin: 20px auto 0;
+            display: flex;
+            justify-content: center;
+        }
+        
+        #arenaCanvas {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        
+        .results-section {
+            background: rgba(244, 228, 193, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            margin-top: 40px;
+            border: 5px solid #228b22;
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        .winner-selection {
+            margin-bottom: 20px;
+        }
+        
+        .winner-selection h3 {
+            color: #1a1a2e;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1em;
+            color: #1a1a2e;
+            cursor: pointer;
+        }
+        
+        .radio-option input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .tasting-notes {
+            margin-top: 20px;
+        }
+        
+        .tasting-notes h3 {
+            color: #1a1a2e;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+        
+        .tasting-notes textarea {
+            width: 100%;
+            padding: 15px;
+            font-size: 1em;
+            border: 3px solid #1a1a2e;
+            border-radius: 8px;
+            resize: vertical;
+            min-height: 100px;
+            font-family: Arial, sans-serif;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            font-size: 1.4em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #dc143c 0%, #a00000 100%);
+            color: #f4e4c1;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #ff1744 0%, #dc143c 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(0,0,0,0.4);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Responsive tweaks */
+        @media (max-width: 480px) {
+            body {
+                justify-content: flex-start;
+                padding: 15px 10px;
+            }
+
+            h1 {
+                font-size: 2.4em;
+                letter-spacing: 4px;
+                margin-bottom: 16px;
+                text-align: center;
+            }
+
+            .fight-card {
+                padding: 14px;
+                margin-bottom: 14px;
+            }
+
+            .pie-code-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .pie-code-section label {
+                text-align: center;
+            }
+
+            .pie-code-section input {
+                max-width: 100%;
+                width: 100%;
+            }
+
+            .fighter-selection {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+
+            .fighter select {
+                min-width: 0;
+                width: 100%;
+            }
+
+            .vs-text {
+                font-size: 1.3em;
+                margin: 2px 0;
+            }
+
+            .ring {
+                margin-top: 12px;
+            }
+
+            .results-section {
+                width: 100%;
+                padding: 20px;
+                margin-top: 20px;
+            }
+
+            .radio-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .submit-btn {
+                font-size: 1.1em;
+                padding: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>LOG <span class="vs">VS</span> LOG</h1>
+    
+    <div class="fight-card">
+        <div class="pie-code-section">
+            <label for="pieCode">Mince Meet #</label>
+            <input type="text" id="pieCode" placeholder="####">
+        </div>
+        <div class="fighter-selection">
+            <div class="fighter" style="text-align:left; width:auto; max-width:260px; align-self:flex-start;">
+                <label>RED CORNER</label>
+                <select id="redFighter"></select>
+            </div>
+            
+            <div class="vs-text">VS</div>
+            
+            <div class="fighter" style="text-align:right; width:auto; max-width:260px; align-self:flex-end;">
+                <label>WHITE CORNER</label>
+                <select id="whiteFighter"></select>
+            </div>
+        </div>
+    </div>
+    
+    <div class="ring">
+        <canvas id="arenaCanvas" width="957" height="800"></canvas>
+    </div>
+    
+    <div class="results-section">
+        <div class="winner-selection">
+            <h3>🏆 DECLARE WINNER</h3>
+            <div class="radio-group">
+                <label class="radio-option">
+                    <input type="radio" name="winner" value="red">
+                    <span id="redLabel">Alan Star</span>
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="winner" value="white">
+                    <span id="whiteLabel">Billie Pieper</span>
+                </label>
+            </div>
+        </div>
+        
+        <div class="tasting-notes">
+            <h3>📝 TASTING NOTES</h3>
+            <textarea id="tastingNotes" placeholder="Summarise the pies. Did the mince convince? Was the crust a must? Was the flavour to savour?"></textarea>
+        </div>
+        
+        <button id="submitBtn" class="submit-btn">SUBMIT RESULTS 🥊</button>
+    </div>h
+
+    <script>
+        const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfZB_ttj3WHE7M81TKmPeUo4HvQiHlKmmoOKL2C7jGI0pZ3eg/viewform';
+        
+        // Single source of truth for fighters with stable IDs
+        const FIGHTERS = [
+            { id: 1, name: 'Yulia Roberts' },
+            { id: 2, name: 'Yule Grant' },
+            { id: 3, name: 'Log Skywalker' }
+        ];
+        
+        const canvas = document.getElementById('arenaCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        const redSelect = document.getElementById('redFighter');
+        const whiteSelect = document.getElementById('whiteFighter');
+        const redLabel = document.getElementById('redLabel');
+        const whiteLabel = document.getElementById('whiteLabel');
+        const winnerRadios = document.querySelectorAll('input[name="winner"]');
+        const pieCode = document.getElementById('pieCode');
+        const tastingNotes = document.getElementById('tastingNotes');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        // Image cache
+        const images = {
+            arena: null,
+            redFighter: null,
+            whiteFighter: null
+        };
+        
+        let currentRedFighter = 'Yulia Roberts';
+        let currentWhiteFighter = 'Log-an';
+        let redImageNumber = 1;
+        let whiteImageNumber = 1;
+        
+        // Helper functions
+        function getFighterById(id) {
+            return FIGHTERS.find(f => f.id === parseInt(id));
+        }
+        
+        function getFighterByName(name) {
+            return FIGHTERS.find(f => f.name === name);
+        }
+        
+        function getFighterFilename(fighterName) {
+            return fighterName.replace(/ /g, '-');
+        }
+        
+        // Populate dropdowns
+        function populateDropdowns() {
+            FIGHTERS.forEach(fighter => {
+                const option1 = document.createElement('option');
+                option1.value = fighter.name;
+                option1.textContent = fighter.name;
+                option1.dataset.id = fighter.id;
+                redSelect.appendChild(option1);
+                
+                const option2 = document.createElement('option');
+                option2.value = fighter.name;
+                option2.textContent = fighter.name;
+                option2.dataset.id = fighter.id;
+                whiteSelect.appendChild(option2);
+            });
+        }
+        
+        // Parse URL parameters
+        function parseURLParams() {
+            const params = new URLSearchParams(window.location.search);
+            
+            // Pie code
+            const code = params.get('code');
+            if (code) {
+                pieCode.value = code;
+            }
+            
+            // Red fighter
+            const redId = params.get('red');
+            if (redId) {
+                const fighter = getFighterById(redId);
+                if (fighter) {
+                    redSelect.value = fighter.name;
+                    currentRedFighter = fighter.name;
+                }
+            }
+            
+            // White fighter
+            const whiteId = params.get('white');
+            if (whiteId) {
+                const fighter = getFighterById(whiteId);
+                if (fighter) {
+                    whiteSelect.value = fighter.name;
+                    currentWhiteFighter = fighter.name;
+                }
+            }
+        }
+        
+        // Load and draw arena
+        function loadArena() {
+            const img = new Image();
+            img.onload = () => {
+                images.arena = img;
+                drawCanvas();
+            };
+            img.src = 'images/other/original/Arena.png';
+        }
+        
+        // Load fighter image
+        function loadFighterImage(fighter, corner, imageNumber = 1) {
+            const filename = getFighterFilename(fighter);
+            const img = new Image();
+            img.onload = () => {
+                if (corner === 'red') {
+                    images.redFighter = img;
+                    redImageNumber = imageNumber;
+                } else {
+                    images.whiteFighter = img;
+                    whiteImageNumber = imageNumber;
+                }
+                drawCanvas();
+            };
+            img.src = `images/fighters/800h/${filename}-${imageNumber}.png`;
+        }
+        
+        // Draw everything on canvas
+        function drawCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            if (images.arena) {
+                ctx.drawImage(images.arena, 0, canvas.height-542, canvas.width, canvas.width*542/957);
+            }
+            
+            const fighterWidth = canvas.width * 0.4;
+            
+            if (images.redFighter) {
+                const aspectRatio = images.redFighter.height / images.redFighter.width;
+                const fighterHeight = fighterWidth * aspectRatio;
+                const x = canvas.width * 0.3 - fighterWidth / 2;
+                const y = canvas.height * 0.35 - fighterHeight / 2;
+                ctx.drawImage(images.redFighter, x, y, fighterWidth, fighterHeight);
+            }
+            
+            if (images.whiteFighter) {
+                const aspectRatio = images.whiteFighter.height / images.whiteFighter.width;
+                const fighterHeight = fighterWidth * aspectRatio;
+                const x = canvas.width * 0.7 - fighterWidth / 2;
+                const y = canvas.height * 0.38 - fighterHeight / 2;
+                ctx.drawImage(images.whiteFighter, x, y, fighterWidth, fighterHeight);
+            }
+        }
+        
+        // Update fighter
+        function updateFighter(fighter, corner, imageNumber = 1) {
+            if (corner === 'red') {
+                currentRedFighter = fighter;
+                loadFighterImage(fighter, 'red', imageNumber);
+            } else {
+                currentWhiteFighter = fighter;
+                loadFighterImage(fighter, 'white', imageNumber);
+            }
+        }
+        
+        // Update labels and images when fighters change
+        redSelect.addEventListener('change', () => {
+            redLabel.textContent = redSelect.value;
+            updateFighter(redSelect.value, 'red', 1);
+            updateFighterOptions();
+            resetWinnerState();
+        });
+        
+        whiteSelect.addEventListener('change', () => {
+            whiteLabel.textContent = whiteSelect.value;
+            updateFighter(whiteSelect.value, 'white', 1);
+            updateFighterOptions();
+            resetWinnerState();
+        });
+        
+        // Prevent selecting the same fighter in both corners
+        function updateFighterOptions() {
+            const redValue = redSelect.value;
+            const whiteValue = whiteSelect.value;
+            
+            Array.from(whiteSelect.options).forEach(option => {
+                option.disabled = (option.value === redValue);
+            });
+            
+            Array.from(redSelect.options).forEach(option => {
+                option.disabled = (option.value === whiteValue);
+            });
+            
+            if (redValue === whiteValue) {
+                for (let option of whiteSelect.options) {
+                    if (!option.disabled && option.value !== redValue) {
+                        whiteSelect.value = option.value;
+                        whiteLabel.textContent = option.value;
+                        updateFighter(option.value, 'white', 1);
+                        break;
+                    }
+                }
+            }
+        }
+        
+        // Reset winner state when fighters change
+        function resetWinnerState() {
+            const checkedRadio = document.querySelector('input[name="winner"]:checked');
+            if (checkedRadio) {
+                checkedRadio.checked = false;
+            }
+            updateFighter(currentRedFighter, 'red', 1);
+            updateFighter(currentWhiteFighter, 'white', 1);
+        }
+        
+        // Handle winner selection
+        winnerRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                if (e.target.value === 'red') {
+                    updateFighter(currentRedFighter, 'red', 2);
+                    updateFighter(currentWhiteFighter, 'white', 3);
+                } else if (e.target.value === 'white') {
+                    updateFighter(currentWhiteFighter, 'white', 2);
+                    updateFighter(currentRedFighter, 'red', 3);
+                }
+            });
+        });
+        
+        // Handle form submission
+        if (submitBtn) {
+            submitBtn.addEventListener('click', () => {
+                const selectedWinner = document.querySelector('input[name="winner"]:checked');
+                
+                if (!pieCode.value.trim()) {
+                    alert('⚠️ Please enter a Log-off Code for verification!');
+                    return;
+                }
+                
+                if (!selectedWinner) {
+                    alert('⚠️ Please declare a winner!');
+                    return;
+                }
+                
+                const formData = {
+                    pieCode: pieCode.value.trim(),
+                    redFighter: redSelect.value,
+                    whiteFighter: whiteSelect.value,
+                    winner: selectedWinner.value === 'red' ? redSelect.value : whiteSelect.value,
+                    loser: selectedWinner.value === 'red' ? whiteSelect.value : redSelect.value,
+                    tastingNotes: tastingNotes.value.trim()
+                };
+                
+                const googleFormData = new FormData();
+                googleFormData.append('entry.2094119789', formData.pieCode);
+                googleFormData.append('entry.1745535013', formData.winner);
+                googleFormData.append('entry.856455218', formData.loser);
+                googleFormData.append('entry.162418582', formData.tastingNotes);
+                
+                fetch(GOOGLE_FORM_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: googleFormData
+                }).then(() => {
+                    alert(`✅ FIGHT RESULTS SUBMITTED!\n\nLog-off Code: ${formData.pieCode}\n${formData.redFighter} vs ${formData.whiteFighter}\nWinner: ${formData.winner}\nLoser: ${formData.loser}\n\nThank you for judging!`);
+                }).catch((error) => {
+                    alert(`✅ FIGHT RESULTS SUBMITTED!\n\nLog-off Code ${formData.pieCode}\n${formData.redFighter} vs ${formData.whiteFighter}\nWinner: ${formData.winner}\nLoser: ${formData.loser}\n\nThank you for judging!`);
+                });
+            });
+        }
+        
+        // Initialize
+        populateDropdowns();
+        parseURLParams();
+        
+        // Set defaults if not set by URL
+        if (!redSelect.value) {
+            redSelect.value = currentRedFighter;
+        }
+        if (!whiteSelect.value) {
+            whiteSelect.value = currentWhiteFighter;
+        }
+        
+        redLabel.textContent = redSelect.value;
+        whiteLabel.textContent = whiteSelect.value;
+        updateFighterOptions();
+        
+        loadArena();
+        updateFighter(redSelect.value, 'red', 1);
+        updateFighter(whiteSelect.value, 'white', 1);
+        
+        window.addEventListener('resize', () => {
+            drawCanvas();
+        });
+    </script>
+</body>
+</html>
