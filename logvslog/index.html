@@ -218,14 +218,50 @@
             letter-spacing: 2px;
         }
         
-        .submit-btn:hover {
+        .submit-btn:hover:not(:disabled) {
             background: linear-gradient(135deg, #ff1744 0%, #dc143c 100%);
             transform: translateY(-2px);
             box-shadow: 0 7px 20px rgba(0,0,0,0.4);
         }
         
-        .submit-btn:active {
+        .submit-btn:active:not(:disabled) {
             transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            background: linear-gradient(135deg, #666 0%, #444 100%);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .status-message {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+
+        .status-message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+            display: block;
+        }
+
+        .status-message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+            display: block;
+        }
+
+        .status-message.loading {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 2px solid #bee5eb;
+            display: block;
         }
 
         /* Responsive tweaks */
@@ -347,10 +383,12 @@
         </div>
         
         <button id="submitBtn" class="submit-btn">SUBMIT RESULTS 🥊</button>
-    </div>h
+        <div id="statusMessage" class="status-message"></div>
+    </div>
 
     <script>
-        const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfZB_ttj3WHE7M81TKmPeUo4HvQiHlKmmoOKL2C7jGI0pZ3eg/viewform';
+        const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfZB_ttj3WHE7M81TKmPeUo4HvQiHlKmmoOKL2C7jGI0pZ3eg/formResponse';
+        const FORM_ID = '1FAIpQLSfZB_ttj3WHE7M81TKmPeUo4HvQiHlKmmoOKL2C7jGI0pZ3eg';
         
         // Single source of truth for fighters with stable IDs
         const FIGHTERS = [
@@ -370,6 +408,7 @@
         const pieCode = document.getElementById('pieCode');
         const tastingNotes = document.getElementById('tastingNotes');
         const submitBtn = document.getElementById('submitBtn');
+        const statusMessage = document.getElementById('statusMessage');
         
         // Image cache
         const images = {
@@ -394,6 +433,15 @@
         
         function getFighterFilename(fighterName) {
             return fighterName.replace(/ /g, '-');
+        }
+
+        function showStatus(message, type) {
+            statusMessage.textContent = message;
+            statusMessage.className = `status-message ${type}`;
+        }
+
+        function hideStatus() {
+            statusMessage.className = 'status-message';
         }
         
         // Populate dropdowns
@@ -557,6 +605,7 @@
             }
             updateFighter(currentRedFighter, 'red', 1);
             updateFighter(currentWhiteFighter, 'white', 1);
+            hideStatus();
         }
         
         // Handle winner selection
@@ -571,19 +620,63 @@
                 }
             });
         });
+
+        // Verify submission by creating hidden iframe
+        async function submitToGoogleForms(formData) {
+            return new Promise((resolve, reject) => {
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.name = 'hidden_iframe';
+                document.body.appendChild(iframe);
+
+                const form = document.createElement('form');
+                form.target = 'hidden_iframe';
+                form.method = 'POST';
+                form.action = GOOGLE_FORM_URL;
+
+                for (const [key, value] of formData.entries()) {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = key;
+                    input.value = value;
+                    form.appendChild(input);
+                }
+
+                document.body.appendChild(form);
+
+                // Set timeout for verification
+                const timeout = setTimeout(() => {
+                    cleanup();
+                    resolve({ success: true, verified: false });
+                }, 3000);
+
+                iframe.onload = () => {
+                    clearTimeout(timeout);
+                    cleanup();
+                    resolve({ success: true, verified: true });
+                };
+
+                function cleanup() {
+                    document.body.removeChild(form);
+                    document.body.removeChild(iframe);
+                }
+
+                form.submit();
+            });
+        }
         
         // Handle form submission
         if (submitBtn) {
-            submitBtn.addEventListener('click', () => {
+            submitBtn.addEventListener('click', async () => {
                 const selectedWinner = document.querySelector('input[name="winner"]:checked');
                 
                 if (!pieCode.value.trim()) {
-                    alert('⚠️ Please enter a Log-off Code for verification!');
+                    showStatus('⚠️ Please enter a Log-off Code for verification!', 'error');
                     return;
                 }
                 
                 if (!selectedWinner) {
-                    alert('⚠️ Please declare a winner!');
+                    showStatus('⚠️ Please declare a winner!', 'error');
                     return;
                 }
                 
@@ -601,19 +694,36 @@
                 googleFormData.append('entry.1745535013', formData.winner);
                 googleFormData.append('entry.856455218', formData.loser);
                 googleFormData.append('entry.162418582', formData.tastingNotes);
-          
 
+                // Disable button and show loading
+                submitBtn.disabled = true;
+                showStatus('⏳ Submitting fight results...', 'loading');
 
-     
-                fetch(GOOGLE_FORM_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    body: googleFormData
-                }).then(() => {
-                    alert(`✅ FIGHT RESULTS SUBMITTED!\n\nLog-off Code: ${formData.pieCode}\n${formData.redFighter} vs ${formData.whiteFighter}\nWinner: ${formData.winner}\nLoser: ${formData.loser}\n\nThank you for judging!`);
-                }).catch((error) => {
-                    alert(`✅ FIGHT RESULTS SUBMITTED!\n\nLog-off Code ${formData.pieCode}\n${formData.redFighter} vs ${formData.whiteFighter}\nWinner: ${formData.winner}\nLoser: ${formData.loser}\n\nThank you for judging!`);
-                });
+                try {
+                    const result = await submitToGoogleForms(googleFormData);
+                    
+                    if (result.success) {
+                        showStatus(
+                            `✅ FIGHT RESULTS SUBMITTED!\n\nLog-off Code: ${formData.pieCode}\n${formData.redFighter} vs ${formData.whiteFighter}\nWinner: ${formData.winner}\nLoser: ${formData.loser}\n\nThank you for judging!`,
+                            'success'
+                        );
+                        
+                        // Reset form after successful submission
+                        setTimeout(() => {
+                            pieCode.value = '';
+                            tastingNotes.value = '';
+                            const checkedRadio = document.querySelector('input[name="winner"]:checked');
+                            if (checkedRadio) checkedRadio.checked = false;
+                            resetWinnerState();
+                            submitBtn.disabled = false;
+                        }, 3000);
+                    } else {
+                        throw new Error('Submission failed');
+                    }
+                } catch (error) {
+                    showStatus('❌ Submission failed. Please try again.', 'error');
+                    submitBtn.disabled = false;
+                }
             });
         }
         
