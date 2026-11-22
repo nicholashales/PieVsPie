@@ -34,3 +34,6 @@ Use stable IDs, not names parsed into filenames. App places **all** fighters at 
 
 ## Pilot
 Produce one six-pose reference fighter and a roster scale lineup containing a short, average-height and tall fighter. Approve both the appearance and **relative size** before batch-generating the 28 existing fighters.
+
+## Pilot roster update
+Four pilot fighters: **Crustia Winkleman**, **Alan Star**, **Greggs Davies** and **Icing Charles**. Icing Charles is a deliberate **visual-gag fidelity test**: the refreshed fighter must retain the clever manually added joke in the existing artwork, not merely the celebrity/pun resemblance. **Do not replace the illustration until the existing image has been visually inspected and the gag explicitly described and approved.** Test the gag in both facing directions, including any lettering or hand-specific prop details. Relative size of all four remains consistent.
