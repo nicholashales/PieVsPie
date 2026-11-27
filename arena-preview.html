@@ -599,9 +599,9 @@
         
         const statusMessage = document.createElement('p');
         statusMessage.setAttribute('role','status');
-        statusMessage.style.cssText='white-space:pre-wrap;color:#f4e4c1;text-align:center;padding:12px;max-width:100%;overflow-wrap:anywhere';
+        statusMessage.style.cssText='white-space:pre-wrap;color:#1a1a2e;text-align:center;padding:12px;max-width:100%;overflow-wrap:anywhere;font-family:Arial,sans-serif;font-size:16px;line-height:1.5';
         submitBtn.after(statusMessage);
-        function showStatus(message,type){statusMessage.textContent=message;statusMessage.dataset.state=type;}
+        function showStatus(message,type){statusMessage.textContent=message;statusMessage.dataset.state=type;statusMessage.style.color=type==='success'?'#14532d':type==='error'?'#991b1b':'#1a1a2e';statusMessage.style.fontWeight='bold';}
         // Test arena: one durable pending submission per browser.
         const queueKey = 'pvp-arena-test-pending-v1';
         let busy = false, retryTimer, retryDelay = 1000;
