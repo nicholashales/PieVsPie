@@ -218,50 +218,14 @@
             letter-spacing: 2px;
         }
         
-        .submit-btn:hover:not(:disabled) {
+        .submit-btn:hover {
             background: linear-gradient(135deg, #ff1744 0%, #dc143c 100%);
             transform: translateY(-2px);
             box-shadow: 0 7px 20px rgba(0,0,0,0.4);
         }
         
-        .submit-btn:active:not(:disabled) {
+        .submit-btn:active {
             transform: translateY(0);
-        }
-
-        .submit-btn:disabled {
-            background: linear-gradient(135deg, #666 0%, #444 100%);
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-
-        .status-message {
-            margin-top: 15px;
-            padding: 12px;
-            border-radius: 8px;
-            text-align: center;
-            font-weight: bold;
-            display: none;
-        }
-
-        .status-message.success {
-            background: #d4edda;
-            color: #155724;
-            border: 2px solid #c3e6cb;
-            display: block;
-        }
-
-        .status-message.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 2px solid #f5c6cb;
-            display: block;
-        }
-
-        .status-message.loading {
-            background: #d1ecf1;
-            color: #0c5460;
-            border: 2px solid #bee5eb;
-            display: block;
         }
 
         /* Responsive tweaks */
@@ -336,11 +300,11 @@
     </style>
 </head>
 <body>
-    <h1>LOG <span class="vs">VS</span> LOG</h1>
+    <h1>PIE <span class="vs">VS</span> PIE</h1>
     
     <div class="fight-card">
         <div class="pie-code-section">
-            <label for="pieCode">Log Off Code</label>
+            <label for="pieCode">Mince Meet #</label>
             <input type="text" id="pieCode" placeholder="####">
         </div>
         <div class="fighter-selection">
@@ -379,17 +343,46 @@
         
         <div class="tasting-notes">
             <h3>📝 TASTING NOTES</h3>
-            <textarea id="tastingNotes" placeholder="Summarise the logs. Was the flavour to savour?"></textarea>
+            <textarea id="tastingNotes" placeholder="Summarise the pies. Did the mince convince? Was the crust a must? Was the flavour to savour?"></textarea>
         </div>
         
         <button id="submitBtn" class="submit-btn">SUBMIT RESULTS 🥊</button>
-        <div id="statusMessage" class="status-message"></div>
     </div>
 
     <script>
-                
+
+        
         // Single source of truth for fighters with stable IDs
-        const FIGHTERS = [{"id":1,"name":"Alan Star"},{"id":2,"name":"Billie Pieper"},{"id":3,"name":"Brandy Toksvig"},{"id":4,"name":"C3-Pie0"},{"id":5,"name":"Camilla Mixing-Bowls"},{"id":6,"name":"Crustia Winkleman"},{"id":7,"name":"Crustin Hoffman"},{"id":8,"name":"Crusty Springfield"},{"id":9,"name":"Dave Grohlling Pin"},{"id":10,"name":"Dr Choux"},{"id":11,"name":"Greggs Davies"},{"id":12,"name":"Icing Charles"},{"id":13,"name":"Jasmin Pieris"},{"id":14,"name":"Kevin Pietersen"},{"id":15,"name":"Linford Crusty"},{"id":16,"name":"Luke Piewalker"},{"id":17,"name":"Miley Pyrus"},{"id":18,"name":"Mince Pyson"},{"id":19,"name":"Mr Feast"},{"id":20,"name":"Oscar Pastry"},{"id":21,"name":"Piela Radcliffe"},{"id":22,"name":"Pieman Cowell"},{"id":23,"name":"Pieter Schmeichel"},{"id":24,"name":"Princess Pieanna"},{"id":25,"name":"R2-D-Licious"},{"id":26,"name":"Shortcrustney Dauwalter"},{"id":27,"name":"Stephen Pie"},{"id":28,"name":"The Sultana of Brunei"}];
+        const FIGHTERS = [
+            { id: 1, name: 'Alan Star' },
+            { id: 2, name: 'Billie Pieper' },
+            { id: 3, name: 'Brandy Toksvig' },
+            { id: 4, name: 'C3-Pie0' },
+            { id: 5, name: 'Camilla Mixing-Bowls' },
+            { id: 6, name: 'Crustia Winkleman' },
+            { id: 7, name: 'Crustin Hoffman' },
+            { id: 8, name: 'Crusty Springfield' },
+            { id: 9, name: 'Dave Grohlling Pin' },
+            { id: 10, name: 'Dr Choux' },
+            { id: 11, name: 'Greggs Davies' },
+            { id: 12, name: 'Icing Charles' },
+            { id: 13, name: 'Jasmin Pieris' },
+            { id: 14, name: 'Kevin Pietersen' },
+            { id: 15, name: 'Linford Crusty' },
+            { id: 16, name: 'Luke Piewalker' },
+            { id: 17, name: 'Miley Pyrus' },
+            { id: 18, name: 'Mince Pyson' },
+            { id: 19, name: 'Mr Feast' },
+            { id: 20, name: 'Oscar Pastry' },
+            { id: 21, name: 'Piela Radcliffe' },
+            { id: 22, name: 'Pieman Cowell' },
+            { id: 23, name: 'Pieter Schmeichel' },
+            { id: 24, name: 'Princess Pieanna' },
+            { id: 25, name: 'R2-D-Licious' },
+            { id: 26, name: 'Shortcrustney Dauwalter' },
+            { id: 27, name: 'Stephen Pie' },
+            { id: 28, name: 'The Sultana of Brunei' }
+        ];
         
         const canvas = document.getElementById('arenaCanvas');
         const ctx = canvas.getContext('2d');
@@ -402,7 +395,6 @@
         const pieCode = document.getElementById('pieCode');
         const tastingNotes = document.getElementById('tastingNotes');
         const submitBtn = document.getElementById('submitBtn');
-        const statusMessage = document.getElementById('statusMessage');
         
         // Image cache
         const images = {
@@ -427,15 +419,6 @@
         
         function getFighterFilename(fighterName) {
             return fighterName.replace(/ /g, '-');
-        }
-
-        function showStatus(message, type) {
-            statusMessage.textContent = message;
-            statusMessage.className = `status-message ${type}`;
-        }
-
-        function hideStatus() {
-            statusMessage.className = 'status-message';
         }
         
         // Populate dropdowns
@@ -599,7 +582,6 @@
             }
             updateFighter(currentRedFighter, 'red', 1);
             updateFighter(currentWhiteFighter, 'white', 1);
-            hideStatus();
         }
         
         // Handle winner selection
@@ -614,7 +596,12 @@
                 }
             });
         });
-
+        
+        const statusMessage = document.createElement('p');
+        statusMessage.setAttribute('role','status');
+        statusMessage.style.cssText='white-space:pre-wrap;color:#f4e4c1;text-align:center;padding:12px;max-width:100%;overflow-wrap:anywhere';
+        submitBtn.after(statusMessage);
+        function showStatus(message,type){statusMessage.textContent=message;statusMessage.dataset.state=type;}
         // Test arena: one durable pending submission per browser.
         const queueKey = 'pvp-arena-test-pending-v1';
         let busy = false, retryTimer, retryDelay = 1000;
