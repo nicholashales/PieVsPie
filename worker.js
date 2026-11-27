@@ -9,7 +9,7 @@ export default {async fetch(request,env){
  const path=url.pathname;
  if(path==="/rules"||path==="/rules/")return new Response(rulesPage,{headers:{"Content-Type":"text/html; charset=utf-8"}});
  if(path==="/api/battle" && url.hostname==="pievspie.nhales.workers.dev")return battle(request,env);
- if(path==="/admin"||path==="/admin/results.csv"){
+ if(path==="/admin"||["/admin/results.csv","/admin/audit","/admin/audit.csv","/admin/standings","/admin/standings.csv"].includes(path)){
   if(url.hostname!=="pievspie.nhales.workers.dev")return new Response("Not found",{status:404});
   return admin(request,env);
  }
