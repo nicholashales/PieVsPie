@@ -1,4 +1,4 @@
-export const testPage = `<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pie vs Pie — reliability test</title><style>body{background:#1a1a2e;color:#f4e4c1;font:16px Arial;padding:24px;max-width:700px;margin:auto}button{padding:14px;background:#f4e4c1;color:#1a1a2e;border:0;border-radius:8px;font-weight:bold}pre{white-space:pre-wrap;line-height:1.6}h1{color:#f4e4c1;text-shadow:2px 2px #dc143c}</style><h1>PIE VS PIE — TEST LAB</h1><p>Test database only. Synthetic results are marked TEST- and retained for verification. No real votes.</p><button id="run">Run reliability checks</button> <button id="copy" disabled>Copy report</button><pre id="out" aria-live="polite"></pre><script>
+export const testPage = `<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pie vs Pie — reliability test</title><style>body{background:#1a1a2e;color:#f4e4c1;font:16px Arial;padding:24px;max-width:700px;margin:auto}button{padding:14px;background:#f4e4c1;color:#1a1a2e;border:0;border-radius:8px;font-weight:bold}pre{white-space:pre-wrap;line-height:1.6}h1{color:#f4e4c1;text-shadow:2px 2px #dc143c}</style><h1>PIE VS PIE — TEST LAB</h1><p>Test database only. Synthetic results are marked TEST- and retained for verification. No real votes.</p><button id="run">Run reliability checks</button> <button id="stress">Run staged load test</button> <button id="recover">Test recovery</button> <button id="copy" disabled>Copy report</button><pre id="out" aria-live="polite"></pre><script>
 const out=document.querySelector('#out'), run=document.querySelector('#run'), copy=document.querySelector('#copy');
 const line=s=>out.textContent+=s+'\\n';
 let pass=0,fail=0;
@@ -6,7 +6,7 @@ async function check(name,fn){try{await fn();pass++;line('PASS — '+name)}catch
 function assert(v,m){if(!v)throw Error(m)}
 async function post(payload){const r=await fetch('/api/results',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),signal:AbortSignal.timeout(20000)});return {status:r.status,body:await r.json()}}
 function confirmed(r,p){assert(r.status===200&&r.body.success===true&&r.body.requestId===p.requestId&&r.body.createdAt,'Not confirmed: '+JSON.stringify(r))}
-run.onclick=async()=>{run.disabled=true;copy.disabled=true;out.textContent='';pass=fail=0;
+run.onclick=async()=>{start();
 const code='TEST-'+crypto.randomUUID();line('Run: '+code);
 const make=()=>({requestId:crypto.randomUUID(),competition:'pie',pieCode:code,redFighter:'TEST Red',whiteFighter:'TEST White',winner:'TEST Red',loser:'TEST White',tastingNotes:'Synthetic reliability test'});
 const p=make();let first;
@@ -18,6 +18,34 @@ await check('Invalid winner rejected',async()=>{const r=await post({...make(),wi
 await check('10 concurrent duplicate requests',async()=>{const q=make();const rs=await Promise.all(Array.from({length:10},()=>post(q)));rs.forEach(r=>confirmed(r,q));assert(new Set(rs.map(r=>r.body.createdAt)).size===1,'Receipts differ')});
 await check('50 distinct concurrent votes',async()=>{const qs=Array.from({length:50},make);const rs=await Promise.all(qs.map(post));rs.forEach((r,i)=>confirmed(r,qs[i]))});
 await check('Exactly 52 persisted rows',async()=>{const r=await fetch('/api/test-count?code='+encodeURIComponent(code),{cache:'no-store'});const b=await r.json();assert(r.ok&&b.count===52,'Expected 52, got '+JSON.stringify(b))});
-line('RESULT: '+pass+' passed, '+fail+' failed');run.disabled=false;copy.disabled=false;};
+finish();};
+const stress=document.querySelector('#stress'),recover=document.querySelector('#recover');
+const buttons=[run,stress,recover];
+function start(){buttons.forEach(b=>b.disabled=true);copy.disabled=true;out.textContent='';pass=fail=0}
+function finish(){line('RESULT: '+pass+' passed, '+fail+' failed');buttons.forEach(b=>b.disabled=false);copy.disabled=false}
+function makeTest(code){return {requestId:crypto.randomUUID(),competition:'pie',pieCode:code,redFighter:'TEST Red',whiteFighter:'TEST White',winner:'TEST Red',loser:'TEST White',tastingNotes:'Synthetic reliability test'}}
+async function count(code){const r=await fetch('/api/test-count?code='+encodeURIComponent(code),{cache:'no-store'});const b=await r.json();assert(r.ok&&Number.isInteger(b.count),'Count unavailable');return b.count}
+stress.onclick=async()=>{if(!confirm('Submit up to 1,850 synthetic results to the test database?'))return;start();try{
+for(const n of [100,250,500,1000]){
+const code='TEST-'+crypto.randomUUID();line('Stage '+n+': '+code);const jobs=Array.from({length:n},()=>makeTest(code));const t=performance.now();
+const rs=await Promise.allSettled(jobs.map(post));let ok=0;rs.forEach((r,i)=>{try{if(r.status==='fulfilled'){confirmed(r.value,jobs[i]);ok++}}catch{}});
+let stored=await count(code);line('Initial confirmations '+ok+'/'+n+'; persisted '+stored+'/'+n+'; '+Math.round(performance.now()-t)+' ms');
+await check(n+' submitted, all confirmed and stored',async()=>assert(ok===n&&stored===n,'Initial confirmations or count incomplete'));
+if(ok!==n||stored!==n){line('Stopped before next stage; no automatic load retry.');break}
+}
+}catch(e){fail++;line('FAIL — '+e.message)}finally{finish()}};
+const keyPrefix='pvp-test-outbox:';
+function enqueue(p){localStorage.setItem(keyPrefix+p.requestId,JSON.stringify(p))}
+function read(id){const raw=localStorage.getItem(keyPrefix+id);return raw?JSON.parse(raw):null}
+async function deliver(id,transport=post){const p=read(id);assert(p,'Pending result missing');const r=await transport(p);confirmed(r,p);localStorage.removeItem(keyPrefix+id);return r}
+recover.onclick=async()=>{start();try{
+const code='TEST-'+crypto.randomUUID();line('Recovery run: '+code);
+const a=makeTest(code),b=makeTest(code);
+await check('Queue survives failure before send',async()=>{enqueue(a);try{await deliver(a.requestId,async()=>{throw Error('Simulated offline')})}catch{}assert(read(a.requestId)?.requestId===a.requestId,'Pending result lost');assert(await count(code)===0,'Unexpected write')});
+await check('Retry delivers queued result',async()=>{await deliver(a.requestId);assert(!read(a.requestId)&&await count(code)===1,'Queue or count incorrect')});
+await check('Lost acknowledgement after commit retains queue',async()=>{enqueue(b);try{await deliver(b.requestId,async p=>{const r=await post(p);confirmed(r,p);throw Error('Simulated lost response')})}catch{}assert(read(b.requestId)?.requestId===b.requestId&&await count(code)===2,'Expected committed result and pending queue')});
+await check('Retry after lost acknowledgement does not duplicate',async()=>{await deliver(b.requestId);assert(!read(b.requestId)&&await count(code)===2,'Duplicate or pending result')});
+await check('Persistent storage can be read back',async()=>{const q=makeTest(code);enqueue(q);assert(JSON.stringify(read(q.requestId))===JSON.stringify(q),'Persistence failed');localStorage.removeItem(keyPrefix+q.requestId)});
+}catch(e){fail++;line('FAIL — '+e.message)}finally{finish()}};
 copy.onclick=async()=>{try{await navigator.clipboard.writeText(out.textContent)}catch{line('Select and copy the report manually.')}};
 </script></html>`;
