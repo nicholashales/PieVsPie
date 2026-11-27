@@ -4,7 +4,8 @@ const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&
 async function equal(a,b){const enc=new TextEncoder();const x=await crypto.subtle.digest("SHA-256",enc.encode(a));const y=await crypto.subtle.digest("SHA-256",enc.encode(b));return crypto.subtle.timingSafeEqual(x,y)}
 function csv(v){let s=String(v??"");if(/^[\s\uFEFF]*[=+@-]|^[\t\r\n]/.test(s))s="'"+s;return '"'+s.replaceAll('"','""')+'"'}
 export async function admin(request,env){
- if(!env.ADMIN_PASSWORD||env.ADMIN_PASSWORD.length<24)return new Response("Administration disabled: configure ADMIN_PASSWORD secret (24+ characters).",{status:503,headers});
+ if(typeof env.ADMIN_PASSWORD!=="string"||!env.ADMIN_PASSWORD)return new Response("Administration disabled: ADMIN_PASSWORD is missing from this Worker deployment.",{status:503,headers});
+ if(env.ADMIN_PASSWORD.length<24)return new Response("Administration disabled: ADMIN_PASSWORD does not meet the 24-character minimum.",{status:503,headers});
  let supplied="";try{const a=request.headers.get("Authorization")||"";if(a.startsWith("Basic "))supplied=atob(a.slice(6))}catch{}
  if(!await equal(supplied,"admin:"+env.ADMIN_PASSWORD))return new Response("Authentication required",{status:401,headers:{...headers,"WWW-Authenticate":'Basic realm="Pie vs Pie admin", charset="UTF-8"'}});
  if(request.method!=="GET")return new Response("Method not allowed",{status:405,headers});
