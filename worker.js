@@ -1,3 +1,5 @@
+import {battle} from "./battle.js";
+import {rulesPage} from "./rules-page.js";
 import {admin} from "./admin.js";
 import {testPage} from "./test-page.js";
 import {onRequestPost} from "./functions/api/results.js";
@@ -5,6 +7,8 @@ import {onRequestGet} from "./functions/api/health.js";
 export default {async fetch(request,env){
  const url=new URL(request.url);
  const path=url.pathname;
+ if(path==="/rules"||path==="/rules/")return new Response(rulesPage,{headers:{"Content-Type":"text/html; charset=utf-8"}});
+ if(path==="/api/battle" && url.hostname==="pievspie.nhales.workers.dev")return battle(request,env);
  if(path==="/admin"||path==="/admin/results.csv"){
   if(url.hostname!=="pievspie.nhales.workers.dev")return new Response("Not found",{status:404});
   return admin(request,env);
