@@ -663,9 +663,57 @@
         window.addEventListener('online',sendPending);
         window.addEventListener('pageshow',sendPending);
         document.addEventListener('visibilitychange',()=>{if(!document.hidden)sendPending()});
+        // Multi-judge practice mode. Legacy arena remains available for offline tests.
+        const rulesLink=document.createElement('a');rulesLink.href='/rules';rulesLink.textContent='Rules of Engagement';rulesLink.style.cssText='color:#f4e4c1;display:block;text-align:center;padding:8px';banner.after(rulesLink);
+        const panel=document.createElement('section');panel.style.cssText='background:#f4e4c1;color:#1a1a2e;padding:16px;border-radius:10px;margin:12px auto;width:min(95%,600px);font:16px Arial;box-sizing:border-box';
+        const heading=document.createElement('h3');heading.textContent='Multi-judge practice';panel.append(heading);
+        const info=document.createElement('p');info.textContent='Enter a unique DEMO- code to practise adding and correcting judges. This does not affect legacy test results.';panel.append(info);
+        const codeInput=document.createElement('input');codeInput.placeholder='DEMO-0042';codeInput.value=new URLSearchParams(location.search).get('code')||'';panel.append(codeInput);
+        const loadButton=document.createElement('button');loadButton.textContent='Load battle';panel.append(loadButton);
+        const summary=document.createElement('p');summary.setAttribute('role','status');panel.append(summary);
+        const list=document.createElement('div');panel.append(list);
+        const add=document.createElement('button');add.textContent='Add selected winner as judge';panel.append(add);
+        submitBtn.closest('div')?.after(panel);if(!panel.isConnected)document.body.append(panel);
+        let activePair=null,working=false;
+        const opPrefix='pvp-judge-event:';
+        const opStatus=document.createElement('p');opStatus.setAttribute('role','status');panel.append(opStatus);
+        function renderBattle(data){
+            activePair=data.pair;redSelect.value=data.pair.red;whiteSelect.value=data.pair.white;
+            redLabel.textContent=data.pair.red;whiteLabel.textContent=data.pair.white;updateFighter(data.pair.red,'red',1);updateFighter(data.pair.white,'white',1);resetWinnerState();
+            summary.textContent=data.pair.red+' '+data.redScore.toFixed(2)+' — '+data.whiteScore.toFixed(2)+' '+data.pair.white+' ('+data.votes.length+' judges)';
+            list.replaceChildren();
+            for(const [i,v] of data.votes.entries()){
+              const row=document.createElement('div');row.style.cssText='border-top:1px solid #aaa;padding:10px 0';
+              const label=document.createElement('p');label.textContent='Judge '+(i+1)+': '+v.winner+(v.notes?' — '+v.notes:'');row.append(label);
+              const edit=document.createElement('button');edit.textContent='Switch winner';edit.onclick=()=>{if(confirm('Correct this judge’s winner?'))queueOperation({judgeId:v.judge_id,revision:v.revision+1,action:'edit',winner:v.winner===data.pair.red?data.pair.white:data.pair.red,notes:v.notes},data.pair)};row.append(edit);
+              const remove=document.createElement('button');remove.textContent='Remove';remove.onclick=()=>{if(confirm('Remove this judge from the score? The audit record is retained.'))queueOperation({judgeId:v.judge_id,revision:v.revision+1,action:'remove',winner:v.winner,notes:v.notes},data.pair)};row.append(remove);list.append(row);
+            }
+        }
+        async function loadBattle(){
+          const code=codeInput.value.trim();activePair=null;list.replaceChildren();
+          try{const r=await fetch('/api/battle?code='+encodeURIComponent(code),{cache:'no-store'});const b=await r.json();if(r.status===404){summary.textContent='New practice battle: choose fighters and add a judge.';return}if(!r.ok)throw Error(b.error);renderBattle(b)}catch(e){summary.textContent=e.message||'Could not load battle';}
+        }
+        async function flushOperations(){
+          if(working)return;working=true;
+          try{
+            const keys=Object.keys(localStorage).filter(k=>k.startsWith(opPrefix));
+            for(const k of keys){
+              const p=JSON.parse(localStorage.getItem(k));if(!p)continue;
+              try{const r=await fetch('/api/battle',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p),signal:AbortSignal.timeout(15000)});const b=await r.json();if(!r.ok||b.success!==true||b.operationId!==p.operationId){opStatus.textContent='Pending operation retained: '+(b.error||'Not confirmed');if(r.status===409){await loadBattle();}continue;}localStorage.removeItem(k);opStatus.textContent='Judge result confirmed.';if(codeInput.value.trim()===p.code)await loadBattle();}catch{opStatus.textContent='Saved on this device, awaiting connection.';}
+            }
+          }catch{opStatus.textContent='Local storage unavailable.';}finally{working=false;}
+        }
+        function queueOperation(v,pair){
+          try{const op={...v,operationId:crypto.randomUUID(),code:pair.code,red:pair.red,white:pair.white};localStorage.setItem(opPrefix+op.operationId,JSON.stringify(op));flushOperations();}catch{opStatus.textContent='Cannot save operation locally.';}
+        }
+        loadButton.onclick=loadBattle;
+        add.onclick=()=>{const selected=document.querySelector('input[name="winner"]:checked');const code=codeInput.value.trim();if(!/^DEMO-[A-Za-z0-9-]{1,64}$/.test(code)||!selected){opStatus.textContent='Enter a DEMO- code and select a winner.';return}const pair={code,red:redSelect.value,white:whiteSelect.value};if(activePair&&(pair.code!==activePair.code||pair.red!==activePair.red||pair.white!==activePair.white)){opStatus.textContent='Reload the battle to restore its fixed pairing.';return}queueOperation({judgeId:crypto.randomUUID(),revision:1,action:'add',winner:selected.value==='red'?pair.red:pair.white,notes:tastingNotes.value.trim()},pair);selected.checked=false;};
+        window.addEventListener('online',flushOperations);window.addEventListener('pageshow',flushOperations);setInterval(flushOperations,15000);
         // Initialize
         populateDropdowns();
         parseURLParams();
+        if(codeInput.value.startsWith('DEMO-'))loadBattle();
+        flushOperations();
         
         // Set defaults if not set by URL
         if (!redSelect.value) {
