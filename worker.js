@@ -1,8 +1,14 @@
+import {admin} from "./admin.js";
 import {testPage} from "./test-page.js";
 import {onRequestPost} from "./functions/api/results.js";
 import {onRequestGet} from "./functions/api/health.js";
 export default {async fetch(request,env){
- const path=new URL(request.url).pathname;
+ const url=new URL(request.url);
+ const path=url.pathname;
+ if(path==="/admin"||path==="/admin/results.csv"){
+  if(url.hostname!=="pievspie.nhales.workers.dev")return new Response("Not found",{status:404});
+  return admin(request,env);
+ }
  if(path==="/api/health" && request.method==="GET") return onRequestGet({request,env});
  if(path==="/api/results" && request.method==="POST") return onRequestPost({request,env});
  if(new URL(request.url).hostname==="pievspie.nhales.workers.dev" && request.method==="GET"){
