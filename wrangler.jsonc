@@ -1,0 +1,16 @@
+{
+  "name": "pievspie",
+  "main": "worker.js",
+  "compatibility_date": "2026-11-27",
+  "workers_dev": true,
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "pievspie-2026-test",
+      "database_id": "f70ca2fa-4358-4a15-9c2c-f247723286be"
+    }
+  ],
+  "observability": {
+    "enabled": true
+  }
+}
