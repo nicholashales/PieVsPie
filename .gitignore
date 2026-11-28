@@ -5,3 +5,24 @@
 /.dev.vars*
 /playwright-report/
 /test-results/
+
+# Local credentials and private keys
+/mykey
+/mykey.*
+/mykey~
+!/mykey.pub
+.env
+.env.*
+!.env.example
+!.env.*.example
+id_rsa
+id_dsa
+id_ecdsa
+id_ed25519
+id_ecdsa_sk
+id_ed25519_sk
+*.key
+*.pem
+*.p12
+*.pfx
+*.ppk
