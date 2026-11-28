@@ -10,6 +10,9 @@
       "database_id": "f70ca2fa-4358-4a15-9c2c-f247723286be"
     }
   ],
+  "ratelimits": [
+    {"name": "ADMIN_RATE_LIMITER", "namespace_id": "1001", "simple": {"limit": 10, "period": 60}}
+  ],
   "observability": {
     "enabled": true
   },

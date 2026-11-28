@@ -1,0 +1,20 @@
+# Pie vs Pie 2026 — Codex handover
+
+## Working agreement
+Owner has granted standing approval for routine implementation, tests, fixes and development commits. Work autonomously through the backlog; do not stop for routine decisions. Use this isolated branch and propose a PR into 2026-cloudflare-migration only after tests. Never merge into the production/default branch, change DNS, incur charges, deploy remotely, change secrets, or destructively modify remote databases without explicit owner approval. Do not expose secrets. Preserve the original visual aesthetic. Ignore abandoned Log vs Log work.
+
+## Current state
+Migration branch uses Cloudflare Workers + D1, worker.js, wrangler.jsonc, build-arena.mjs, arena-preview.html, battle.js, standings.js, admin.js, rules-page.js. Test hostname https://pievspie.nhales.workers.dev; live pievspie.online is still 2025. Owner reports migrations 0001 and 0003 applied to test D1; verify 0002 separately before relying on it. Existing legacy test endpoint and arena passed owner-reported load and offline tests (up to 1000 submissions), admin login and CSV confirmed. Multi-judge DEMO practice API/UI and weighted reports committed but not end-to-end verified. Do not treat earlier test claims as proof of new functionality.
+
+## Agreed rules
+Approximately 200 unique registered battles; QR codes target permanent pievspie.online addresses, fixed red/white fighter pairing per code, never trust URL fighter values over registered pair. Anyone holding the code can view, add, edit or remove judge votes without login; trust but verify, permanent append-only audit history, admin restoration, optimistic concurrency, individual tasting notes. Each completed battle contributes total weight exactly 1, split by active judge vote shares. No active votes means no scored battle. BTL on weighted outcomes with L2 log-strength regularization lambda=0.1, rank by full precision; approved after historical comparison. Original 2024 workbook is held by owner, not assumed present in repository; request a sanitized fixture if needed. Preserve blind tasting. Rules wording in rules-page.js approved; link on every voting page.
+
+## Backlog (execute in order)
+1. Inspect repository and existing release checklist. Establish reproducible local tests using local D1/SQLite and browser tests; never target remote D1 for automated tests. Verify migrations, API validation, concurrent writes, idempotent retries, lost acknowledgements, multi-tab and browser restart, removed votes, fractional weights, BTL numerical convergence and order invariance. Fix defects and add regression tests. In particular inspect queue retry/conflict handling, race conditions, duplicate clicks and authentication boundaries.
+2. Integrate multi-judge voting naturally into original arena, not separate practice panel. QR rescan restores pairing/votes; edit winner and notes, remove with confirmation, recover queued operations without duplicate votes, show clear saved vs pending status. Keep legacy synthetic data isolated.
+3. Protected admin history and restoration via append-only events; raw votes, battle weights and audit CSV exports, backup/restore drill locally. Preserve existing authentication and add appropriate CSRF/rate-limit protections; document deployment configuration.
+4. Registered battle import/validation and printable fight card QR generation workflow; use stable roster IDs, avoid assuming final 2026 roster or pairings are supplied. Preserve older competition archives. No invented production registrations.
+5. Document production release runbook: clean separate database, migration verification, rollback, backups, corporate-network testing, DNS and HTTPS cutover, final smoke tests. Owner performs remote configuration and launch approvals.
+
+## Deliverables
+Maintain docs/development-log.md with changes, exact test commands and outcomes, assumptions, unresolved issues and genuine blockers. Prefer small commits and a reviewable PR. Never claim an unrun test passed. Continue independent tasks when a dependency is blocked. Do not wait for approvals already granted. No credentials needed for local development.
